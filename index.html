@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форма ввода телефона</title>
+    <title>Программа лояльности</title>
     <style>
+        /* ============================================
+           БАЗОВЫЕ СТИЛИ И СБРОС
+           ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -13,305 +16,484 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
             min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* ============================================
+           ШАПКА
+           ============================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: transparent;
+        }
+
+        .header-icon {
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            cursor: pointer;
         }
 
-        .form-container {
+        .header-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            flex: 1;
+        }
+
+        /* ============================================
+           БЛОК КАРТЫ ЛОЯЛЬНОСТИ
+           ============================================ */
+        .loyalty-section {
+            padding: 0 20px 30px;
+        }
+
+        .loyalty-container {
+            display: flex;
+            gap: 15px;
             background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .loyalty-card {
+            flex: 1.5;
             border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 40px;
+            overflow: hidden;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .loyalty-card img {
             width: 100%;
-            max-width: 480px;
-        }
-
-        .form-title {
-            font-size: 28px;
-            font-weight: 600;
-            color: #1a202c;
-            margin-bottom: 8px;
-        }
-
-        .form-subtitle {
-            font-size: 15px;
-            color: #718096;
-            margin-bottom: 32px;
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        .form-label {
+            height: 100%;
+            object-fit: cover;
             display: block;
-            font-size: 14px;
-            font-weight: 500;
-            color: #2d3748;
-            margin-bottom: 8px;
         }
 
-        .input-wrapper {
+        .loyalty-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .qr-code {
+            background: white;
+            border-radius: 12px;
+            padding: 10px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .bonuses {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 15px;
+            color: white;
+            text-align: center;
+        }
+
+        .bonuses-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .bonuses-amount {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .bonuses-icon {
+            font-size: 20px;
+            margin-top: 5px;
+        }
+
+        /* ============================================
+           СЛАЙДЕР АКЦИЙ
+           ============================================ */
+        .promotions-section {
+            padding: 0 20px 30px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .slide {
+            min-width: 100%;
             position: relative;
         }
 
-        .form-input {
+        .slide img {
             width: 100%;
-            padding: 14px 16px;
-            font-size: 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        .form-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-input.error {
-            border-color: #f56565;
-        }
-
-        .error-message {
-            font-size: 13px;
-            color: #f56565;
-            margin-top: 6px;
-            display: none;
-        }
-
-        .error-message.visible {
+            height: 250px;
+            object-fit: cover;
             display: block;
         }
 
-        .hint {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 6px;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
+        .slide-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 30px 20px 20px;
             color: white;
-            background: #667eea;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .submit-button:hover {
-            background: #5568d3;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        .submit-button:active {
-            transform: translateY(0);
-        }
-
-        .result {
-            margin-top: 24px;
-            padding: 16px;
-            background: #f7fafc;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            display: none;
-        }
-
-        .result.visible {
-            display: block;
-        }
-
-        .result-title {
+        .slide-badge {
+            display: inline-block;
+            background: #ff416c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 14px;
             font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .result-content {
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            color: #4a5568;
-            white-space: pre-wrap;
-            word-break: break-all;
+        .slide-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
 
+        .slide-timer {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px;
+            background: white;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #ff416c;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* ============================================
+           БЛОКИ ПОДАРКОВ И ИСТОРИИ
+           ============================================ */
+        .features-section {
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .feature-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        /* ============================================
+           АДАПТИВНОСТЬ
+           ============================================ */
         @media (max-width: 640px) {
-            .form-container {
-                padding: 28px 24px;
+            .loyalty-container {
+                flex-direction: column;
             }
 
-            .form-title {
-                font-size: 24px;
+            .loyalty-card {
+                min-height: 180px;
+            }
+
+            .loyalty-right {
+                flex-direction: row;
+            }
+
+            .qr-code {
+                flex: 1;
+            }
+
+            .bonuses {
+                flex: 1;
+            }
+
+            .features-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 480px;
+                margin: 0 auto;
             }
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1 class="form-title">Контактная информация</h1>
-        <p class="form-subtitle">Введите ваш номер телефона для связи</p>
+    <!-- ШАПКА -->
+    <header class="header">
+        <div class="header-icon">
+            <!-- Иконка профиля -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+        <div class="logo">ЛОГОТИП</div>
+        <div class="header-icon">
+            <!-- Иконка сообщений -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+            </svg>
+        </div>
+    </header>
 
-        <form id="phoneForm">
-            <div class="form-group">
-                <label class="form-label" for="phone">Номер телефона</label>
-                <div class="input-wrapper">
-                    <input
-                        type="tel"
-                        id="phone"
-                        class="form-input"
-                        placeholder="+7 (917) 123-45-67"
-                        autocomplete="tel"
-                        required
-                    >
+    <!-- БЛОК КАРТЫ ЛОЯЛЬНОСТИ -->
+    <section class="loyalty-section">
+        <div class="loyalty-container">
+            <div class="loyalty-card">
+                <img src="images/loyalty-card.jpg" alt="Карта лояльности">
+            </div>
+            <div class="loyalty-right">
+                <div class="qr-code">
+                    <!-- QR-код (placeholder - замени на свой) -->
+                    <svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="100" height="100" fill="white"/>
+                        <rect x="10" y="10" width="25" height="25" fill="black"/>
+                        <rect x="65" y="10" width="25" height="25" fill="black"/>
+                        <rect x="10" y="65" width="25" height="25" fill="black"/>
+                        <rect x="15" y="15" width="15" height="15" fill="white"/>
+                        <rect x="70" y="15" width="15" height="15" fill="white"/>
+                        <rect x="15" y="70" width="15" height="15" fill="white"/>
+                        <rect x="20" y="20" width="5" height="5" fill="black"/>
+                        <rect x="75" y="20" width="5" height="5" fill="black"/>
+                        <rect x="20" y="75" width="5" height="5" fill="black"/>
+                        <rect x="40" y="10" width="5" height="5" fill="black"/>
+                        <rect x="50" y="10" width="5" height="5" fill="black"/>
+                        <rect x="40" y="20" width="5" height="5" fill="black"/>
+                        <rect x="50" y="20" width="5" height="5" fill="black"/>
+                        <rect x="40" y="30" width="5" height="5" fill="black"/>
+                        <rect x="10" y="40" width="5" height="5" fill="black"/>
+                        <rect x="20" y="40" width="5" height="5" fill="black"/>
+                        <rect x="30" y="40" width="5" height="5" fill="black"/>
+                        <rect x="10" y="50" width="5" height="5" fill="black"/>
+                        <rect x="30" y="50" width="5" height="5" fill="black"/>
+                        <rect x="40" y="40" width="5" height="5" fill="black"/>
+                        <rect x="50" y="40" width="5" height="5" fill="black"/>
+                        <rect x="60" y="40" width="5" height="5" fill="black"/>
+                        <rect x="40" y="50" width="5" height="5" fill="black"/>
+                        <rect x="60" y="50" width="5" height="5" fill="black"/>
+                        <rect x="40" y="60" width="5" height="5" fill="black"/>
+                        <rect x="50" y="60" width="5" height="5" fill="black"/>
+                        <rect x="60" y="60" width="5" height="5" fill="black"/>
+                        <rect x="70" y="60" width="5" height="5" fill="black"/>
+                        <rect x="80" y="60" width="5" height="5" fill="black"/>
+                        <rect x="40" y="70" width="5" height="5" fill="black"/>
+                        <rect x="60" y="70" width="5" height="5" fill="black"/>
+                        <rect x="80" y="70" width="5" height="5" fill="black"/>
+                        <rect x="40" y="80" width="5" height="5" fill="black"/>
+                        <rect x="50" y="80" width="5" height="5" fill="black"/>
+                        <rect x="70" y="80" width="5" height="5" fill="black"/>
+                        <rect x="80" y="80" width="5" height="5" fill="black"/>
+                    </svg>
                 </div>
-                <div class="hint">Можно вводить с +7, 8, 7 или сразу с 9</div>
-                <div class="error-message" id="errorMessage">
-                    Пожалуйста, введите корректный номер телефона (11 цифр)
+                <div class="bonuses">
+                    <div class="bonuses-label">Бонусы</div>
+                    <div class="bonuses-amount">298</div>
+                    <div class="bonuses-icon">⭐</div>
                 </div>
             </div>
-
-            <button type="submit" class="submit-button">Отправить</button>
-        </form>
-
-        <div class="result" id="result">
-            <div class="result-title">Данные для отправки на сервер:</div>
-            <div class="result-content" id="resultContent"></div>
         </div>
-    </div>
+    </section>
+
+    <!-- СЛАЙДЕР АКЦИЙ -->
+    <section class="promotions-section">
+        <h2 class="section-title">Предложения для вас</h2>
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                <div class="slide">
+                    <img src="images/promo-1.jpg" alt="Акция 1">
+                    <div class="slide-content">
+                        <span class="slide-badge">-30%</span>
+                        <div class="slide-title">Йогурт Даниссимо</div>
+                        <div class="slide-timer">Осталось 12 часов</div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="images/promo-2.jpg" alt="Акция 2">
+                    <div class="slide-content">
+                        <span class="slide-badge">-30%</span>
+                        <div class="slide-title">Сыр Фетакса</div>
+                        <div class="slide-timer">Осталось 12 часов</div>
+                    </div>
+                </div>
+                <div class="slide">
+                    <img src="images/promo-3.jpg" alt="Акция 3">
+                    <div class="slide-content">
+                        <span class="slide-badge">-20%</span>
+                        <div class="slide-title">Вода Alpine Spring</div>
+                        <div class="slide-timer">Осталось 8 часов</div>
+                    </div>
+                </div>
+            </div>
+            <div class="slider-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- БЛОКИ ПОДАРКОВ И ИСТОРИИ -->
+    <section class="features-section">
+        <div class="feature-card">
+            <img src="images/gift.jpg" alt="Мои подарки" class="feature-image">
+            <div class="feature-content">
+                <div class="feature-title">Мои подарки</div>
+            </div>
+        </div>
+        <div class="feature-card">
+            <img src="images/history.jpg" alt="История начислений" class="feature-image">
+            <div class="feature-content">
+                <div class="feature-title">История начислений</div>
+            </div>
+        </div>
+    </section>
 
     <script>
         /**
          * ============================================
-         * ЛОГИКА НОРМАЛИЗАЦИИ ТЕЛЕФОНА
+         * СЛАЙДЕР АКЦИЙ
          * ============================================
-         * 
-         * ЭТОТ БЛОК КРИТИЧЕСКИ ВАЖЕН ДЛЯ БЭКЕНД-РАЗРАБОТЧИКА (PYTHON)
-         * 
-         * Фронтенд всегда отправляет номер в формате: 7XXXXXXXXX
-         * где X - это цифры от 0 до 9
-         * Всего 11 цифр, первая всегда 7, вторая обычно 9
-         * 
-         * Примеры преобразований:
-         * - Пользователь ввел: +7 (917) 123-45-67 → На сервер: 79171234567
-         * - Пользователь ввел: 8 (917) 123-45-67 → На сервер: 79171234567
-         * - Пользователь ввел: 7 (917) 123-45-67 → На сервер: 79171234567
-         * - Пользователь ввел: 9171234567 → На сервер: 79171234567
-         * - Пользователь ввел: 917 123 45 67 → На сервер: 79171234567
-         * 
-         * БЭКЕНД ДОЛЖЕН:
-         * 1. Принять JSON с полем "phone" (строка)
-         * 2. Проверить, что длина ровно 11 символов
-         * 3. Проверить, что все символы - цифры
-         * 4. Проверить, что первая цифра - 7
-         * 5. Если все ок - сохранить в базу или передать дальше
+         * Автоматическая прокрутка + ручное управление
          */
 
-        function normalizePhone(inputValue) {
-            let digits = inputValue.replace(/\D/g, '');
+        const slider = document.getElementById('slider');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+        const totalSlides = 3;
 
-            if (digits.length > 11) {
-                digits = digits.slice(0, 11);
-            }
-
-            if (digits.startsWith('8')) {
-                digits = '7' + digits.slice(1);
-            }
-            else if (!digits.startsWith('7')) {
-                digits = '7' + digits;
-            }
-
-            if (digits.length === 11 && digits.startsWith('7')) {
-                return digits;
-            }
-
-            return null;
+        function goToSlide(index) {
+            currentSlide = index;
+            slider.style.transform = `translateX(-${index * 100}%)`;
+            
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
         }
 
-        function applyPhoneMask(inputValue) {
-            const digits = inputValue.replace(/\D/g, '');
-            
-            if (digits.length === 0) return '';
-            
-            let displayDigits = digits;
-            
-            if (digits.startsWith('8') || digits.startsWith('7')) {
-                displayDigits = digits.slice(1);
-            }
-            
-            let formatted = '+7';
-            
-            if (displayDigits.length > 0) {
-                formatted += ' (' + displayDigits.slice(0, 3);
-            }
-            
-            if (displayDigits.length >= 4) {
-                formatted += ') ' + displayDigits.slice(3, 6);
-            }
-            
-            if (displayDigits.length >= 7) {
-                formatted += '-' + displayDigits.slice(6, 8);
-            }
-            
-            if (displayDigits.length >= 9) {
-                formatted += '-' + displayDigits.slice(8, 10);
-            }
-            
-            return formatted;
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(currentSlide);
         }
 
-        const phoneInput = document.getElementById('phone');
-        const phoneForm = document.getElementById('phoneForm');
-        const errorMessage = document.getElementById('errorMessage');
-        const result = document.getElementById('result');
-        const resultContent = document.getElementById('resultContent');
+        // Автоматическая прокрутка каждые 5 секунд
+        setInterval(nextSlide, 5000);
 
-        phoneInput.addEventListener('input', function(e) {
-            const newValue = applyPhoneMask(e.target.value);
-            e.target.value = newValue;
-            
-            errorMessage.classList.remove('visible');
-            phoneInput.classList.remove('error');
-            result.classList.remove('visible');
+        // Ручное управление по точкам
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
         });
 
-        phoneInput.addEventListener('blur', function(e) {
-            if (e.target.value === '+7' || e.target.value === '+7 (') {
-                e.target.value = '';
-            }
-        });
-
-        phoneForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const normalizedPhone = normalizePhone(phoneInput.value);
-
-            if (!normalizedPhone) {
-                errorMessage.classList.add('visible');
-                phoneInput.classList.add('error');
-                return;
-            }
-
-            const requestData = {
-                phone: normalizedPhone
-            };
-
-            resultContent.textContent = JSON.stringify(requestData, null, 2);
-            result.classList.add('visible');
-
-            console.log('Данные для отправки на сервер:', requestData);
-            console.log('Формат номера:', normalizedPhone);
-        });
+        /**
+         * ============================================
+         * ИНСТРУКЦИЯ ДЛЯ РАЗРАБОТЧИКА
+         * ============================================
+         * 
+         * Структура папок:
+         * /
+         * ├── index.html (этот файл)
+         * ── images/
+         *     ├── loyalty-card.jpg (карта лояльности)
+         *     ├── promo-1.jpg (акция 1)
+         *     ├── promo-2.jpg (акция 2)
+         *     ├── promo-3.jpg (акция 3)
+         *     ├── gift.jpg (подарок)
+         *     └── history.jpg (история/часы)
+         * 
+         * Для подключения к админке:
+         * 1. Замени статичные данные в слайдере на динамические из API
+         * 2. Добавь fetch-запрос для получения акций
+         * 3. Обновляй бонусы через API
+         */
     </script>
 </body>
 </html>
