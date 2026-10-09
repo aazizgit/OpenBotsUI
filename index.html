@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма ввода телефона</title>
+    <style>
+        /* ============================================
+           БАЗОВЫЕ СТИЛИ И СБРОС
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ============================================
+           КОНТЕЙНЕР ФОРМЫ
+           ============================================ */
+        .form-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 15px;
+            color: #718096;
+            margin-bottom: 32px;
+        }
+
+        /* ============================================
+           ГРУППА ПОЛЯ ВВОДА
+           ============================================ */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #f56565;
+        }
+
+        .error-message {
+            font-size: 13px;
+            color: #f56565;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* ============================================
+           КНОПКА ОТПРАВКИ
+           ============================================ */
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: #667eea;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .submit-button:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           РЕЗУЛЬТАТ (для демонстрации)
+           ============================================ */
+        .result {
+            margin-top: 24px;
+            padding: 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .result.visible {
+            display: block;
+        }
+
+        .result-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .result-content {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #4a5568;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* ============================================
+           АДАПТИВНОСТЬ
+           ============================================ */
+        @media (max-width: 640px) {
+            .form-container {
+                padding: 28px 24px;
+            }
+
+            .form-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title">Контактная информация</h1>
+        <p class="form-subtitle">Введите ваш номер телефона для связи</p>
+
+        <form id="phoneForm">
+            <div class="form-group">
+                <label class="form-label" for="phone">Номер телефона</label>
+                <div class="input-wrapper">
+                    <input
+                        type="tel"
+                        id="phone"
+                        class="form-input"
+                        placeholder="+7 (___) ___-__-__"
+                        autocomplete="tel"
+                        required
+                    >
+                </div>
+                <div class="error-message" id="errorMessage">
+                    Пожалуйста, введите корректный номер телефона (11 цифр)
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">Отправить</button>
+        </form>
+
+        <div class="result" id="result">
+            <div class="result-title">Данные для отправки на сервер:</div>
+            <div class="result-content" id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * ============================================
+         * ЛОГИКА НОРМАЛИЗАЦИИ ТЕЛЕФОНА
+         * ============================================
+         * 
+         * ЭТОТ БЛОК КРИТИЧЕСКИ ВАЖЕН ДЛЯ БЭКЕНД-РАЗРАБОТЧИКА (PYTHON)
+         * 
+         * Фронтенд всегда отправляет номер в формате: 7XXXXXXXXX
+         * где X - это цифры от 0 до 9
+         * Всего 11 цифр, первая всегда 7, вторая обычно 9
+         * 
+         * Примеры преобразований:
+         * - Пользователь ввел: +7 (917) 123-45-67 → На сервер: 79171234567
+         * - Пользователь ввел: 8 (917) 123-45-67 → На сервер: 79171234567
+         * - Пользователь ввел: 7 (917) 123-45-67 → На сервер: 79171234567
+         * - Пользователь ввел: 9171234567 → На сервер: 79171234567
+         * 
+         * БЭКЕНД ДОЛЖЕН:
+         * 1. Принять JSON с полем "phone" (строка)
+         * 2. Проверить, что длина ровно 11 символов
+         * 3. Проверить, что все символы - цифры
+         * 4. Проверить, что первая цифра - 7
+         * 5. Если все ок - сохранить в базу или передать дальше
+         */
+
+        /**
+         * Функция нормализации номера телефона
+         * Принимает любую строку, возвращает формат 7XXXXXXXXX или null
+         */
+        function normalizePhone(inputValue) {
+            // Удаляем все символы, кроме цифр
+            let digits = inputValue.replace(/\D/g, '');
+
+            // Если введено больше 11 цифр, обрезаем лишнее
+            if (digits.length > 11) {
+                digits = digits.slice(0, 11);
+            }
+
+            // Обработка случая, когда номер начинается с 8
+            if (digits.startsWith('8')) {
+                digits = '7' + digits.slice(1);
+            }
+            // Обработка случая, когда номер начинается с 9 (пропущен код страны)
+            else if (!digits.startsWith('7')) {
+                digits = '7' + digits;
+            }
+
+            // Проверяем, что получилось ровно 11 цифр и начинается с 7
+            if (digits.length === 11 && digits.startsWith('7')) {
+                return digits;
+            }
+
+            return null; // Номер невалидный
+        }
+
+        /**
+         * Функция применения маски ввода
+         * Форматирует цифры в красивый вид: +7 (917) 123-45-67
+         */
+        function applyPhoneMask(inputValue) {
+            const digits = inputValue.replace(/\D/g, '');
+            
+            if (digits.length === 0) return '';
+            
+            let formatted = '+7';
+            
+            if (digits.length > 1) {
+                formatted += ' (' + digits.slice(1, 4);
+            }
+            
+            if (digits.length >= 5) {
+                formatted += ') ' + digits.slice(4, 7);
+            }
+            
+            if (digits.length >= 8) {
+                formatted += '-' + digits.slice(7, 9);
+            }
+            
+            if (digits.length >= 10) {
+                formatted += '-' + digits.slice(9, 11);
+            }
+            
+            return formatted;
+        }
+
+        // ============================================
+        // ОБРАБОТКА СОБЫТИЙ ПОЛЯ ВВОДА
+        // ============================================
+
+        const phoneInput = document.getElementById('phone');
+        const phoneForm = document.getElementById('phoneForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const result = document.getElementById('result');
+        const resultContent = document.getElementById('resultContent');
+
+        // Применяем маску при вводе
+        phoneInput.addEventListener('input', function(e) {
+            const cursorPosition = e.target.selectionStart;
+            const oldValue = e.target.value;
+            const newValue = applyPhoneMask(e.target.value);
+            
+            e.target.value = newValue;
+            
+            // Восстанавливаем позицию курсора
+            const diff = newValue.length - oldValue.length;
+            e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
+            
+            // Скрываем ошибку при вводе
+            errorMessage.classList.remove('visible');
+            phoneInput.classList.remove('error');
+            result.classList.remove('visible');
+        });
+
+        // При фокусе добавляем +7, если поле пустое
+        phoneInput.addEventListener('focus', function(e) {
+            if (e.target.value === '') {
+                e.target.value = '+7 (';
+            }
+        });
+
+        // При потере фокуса убираем незавершенную маску
+        phoneInput.addEventListener('blur', function(e) {
+            if (e.target.value === '+7 (' || e.target.value === '+7') {
+                e.target.value = '';
+            }
+        });
+
+        // ============================================
+        // ОБРАБОТКА ОТПРАВКИ ФОРМЫ
+        // ============================================
+
+        phoneForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Нормализуем номер
+            const normalizedPhone = normalizePhone(phoneInput.value);
+
+            // Валидация
+            if (!normalizedPhone) {
+                errorMessage.classList.add('visible');
+                phoneInput.classList.add('error');
+                return;
+            }
+
+            // Формируем JSON для отправки на сервер
+            const requestData = {
+                phone: normalizedPhone,
+                // Здесь могут быть другие поля формы
+                // name: document.getElementById('name').value,
+                // email: document.getElementById('email').value
+            };
+
+            /**
+             * ============================================
+             * ПРИМЕР ОТПРАВКИ НА БЭКЕНД (PYTHON)
+             * ============================================
+             * 
+             * Раскомментируйте этот код, когда бэкенд будет готов
+             * Замените URL на реальный эндпоинт вашего API
+             * 
+             * fetch('https://your-api.com/api/submit', {
+             *     method: 'POST',
+             *     headers: {
+             *         'Content-Type': 'application/json',
+             *     },
+             *     body: JSON.stringify(requestData)
+             * })
+             * .then(response => response.json())
+             * .then(data => {
+             *     console.log('Успех:', data);
+             *     // Обработка успешного ответа
+             * })
+             * .catch(error => {
+             *     console.error('Ошибка:', error);
+             *     // Обработка ошибки
+             * });
+             */
+
+            // Для демонстрации показываем, что будет отправлено
+            resultContent.textContent = JSON.stringify(requestData, null, 2);
+            result.classList.add('visible');
+
+            console.log('Данные для отправки на сервер:', requestData);
+            console.log('Формат номера:', normalizedPhone);
+        });
+    </script>
+</body>
+</html>
