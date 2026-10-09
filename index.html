@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Форма ввода телефона</title>
     <style>
-        /* ============================================
-           БАЗОВЫЕ СТИЛИ И СБРОС
-           ============================================ */
         * {
             margin: 0;
             padding: 0;
@@ -24,9 +21,6 @@
             padding: 20px;
         }
 
-        /* ============================================
-           КОНТЕЙНЕР ФОРМЫ
-           ============================================ */
         .form-container {
             background: white;
             border-radius: 16px;
@@ -49,9 +43,6 @@
             margin-bottom: 32px;
         }
 
-        /* ============================================
-           ГРУППА ПОЛЯ ВВОДА
-           ============================================ */
         .form-group {
             margin-bottom: 24px;
         }
@@ -104,9 +95,6 @@
             margin-top: 6px;
         }
 
-        /* ============================================
-           КНОПКА ОТПРАВКИ
-           ============================================ */
         .submit-button {
             width: 100%;
             padding: 14px;
@@ -130,9 +118,6 @@
             transform: translateY(0);
         }
 
-        /* ============================================
-           РЕЗУЛЬТАТ (для демонстрации)
-           ============================================ */
         .result {
             margin-top: 24px;
             padding: 16px;
@@ -161,9 +146,6 @@
             word-break: break-all;
         }
 
-        /* ============================================
-           АДАПТИВНОСТЬ
-           ============================================ */
         @media (max-width: 640px) {
             .form-container {
                 padding: 28px 24px;
@@ -188,7 +170,7 @@
                         type="tel"
                         id="phone"
                         class="form-input"
-                        placeholder="+7 (___) ___-__-__"
+                        placeholder="+7 (917) 123-45-67"
                         autocomplete="tel"
                         required
                     >
@@ -235,67 +217,39 @@
          * 5. Если все ок - сохранить в базу или передать дальше
          */
 
-        /**
-         * Функция нормализации номера телефона
-         * Принимает любую строку, возвращает формат 7XXXXXXXXX или null
-         */
         function normalizePhone(inputValue) {
-            // Удаляем все символы, кроме цифр
             let digits = inputValue.replace(/\D/g, '');
 
-            // Если введено больше 11 цифр, обрезаем лишнее
             if (digits.length > 11) {
                 digits = digits.slice(0, 11);
             }
 
-            // Обработка случая, когда номер начинается с 8
             if (digits.startsWith('8')) {
                 digits = '7' + digits.slice(1);
             }
-            // Обработка случая, когда номер начинается с 9 (пропущен код страны)
             else if (!digits.startsWith('7')) {
                 digits = '7' + digits;
             }
 
-            // Проверяем, что получилось ровно 11 цифр и начинается с 7
             if (digits.length === 11 && digits.startsWith('7')) {
                 return digits;
             }
 
-            return null; // Номер невалидный
+            return null;
         }
 
-        /**
-         * Функция применения маски ввода
-         * Форматирует цифры в красивый вид: +7 (917) 123-45-67
-         * Теперь более гибкая - позволяет вводить любое количество цифр
-         */
         function applyPhoneMask(inputValue) {
             const digits = inputValue.replace(/\D/g, '');
             
             if (digits.length === 0) return '';
             
-            // Определяем, с чего начал пользователь
             let displayDigits = digits;
-            let prefix = '+7';
             
-            // Если пользователь начал с 8, 7 или +7, показываем +7
             if (digits.startsWith('8') || digits.startsWith('7')) {
-                displayDigits = digits.slice(1); // Убираем первую цифру для отображения
-                prefix = '+7';
-            }
-            // Если пользователь начал с 9, всё равно показываем +7
-            else if (digits.startsWith('9')) {
-                displayDigits = digits; // Оставляем как есть
-                prefix = '+7';
-            }
-            // Если пользователь начал с других цифр (например, 1, 2, 3)
-            else {
-                displayDigits = digits;
-                prefix = '+7';
+                displayDigits = digits.slice(1);
             }
             
-            let formatted = prefix;
+            let formatted = '+7';
             
             if (displayDigits.length > 0) {
                 formatted += ' (' + displayDigits.slice(0, 3);
@@ -316,113 +270,42 @@
             return formatted;
         }
 
-        // ============================================
-        // ОБРАБОТКА СОБЫТИЙ ПОЛЯ ВВОДА
-        // ============================================
-
         const phoneInput = document.getElementById('phone');
         const phoneForm = document.getElementById('phoneForm');
         const errorMessage = document.getElementById('errorMessage');
         const result = document.getElementById('result');
         const resultContent = document.getElementById('resultContent');
 
-        // Применяем маску при вводе
         phoneInput.addEventListener('input', function(e) {
-            const cursorPosition = e.target.selectionStart;
-            const oldValue = e.target.value;
             const newValue = applyPhoneMask(e.target.value);
-            
             e.target.value = newValue;
             
-            // Восстанавливаем позицию курсора
-            const diff = newValue.length - oldValue.length;
-            e.target.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
-            
-            // Скрываем ошибку при вводе
             errorMessage.classList.remove('visible');
             phoneInput.classList.remove('error');
             result.classList.remove('visible');
         });
 
-        // При фокусе добавляем +7, если поле пустое
-        phoneInput.addEventListener('focus', function(e) {
-            if (e.target.value === '') {
-                e.target.value = '+7 (';
-                // Устанавливаем курсор после "+7 ("
-                setTimeout(() => {
-                    e.target.setSelectionRange(4, 4);
-                }, 0);
-            }
-        });
-
-        // При потере фокуса убираем незавершенную маску
         phoneInput.addEventListener('blur', function(e) {
-            if (e.target.value === '+7 (' || e.target.value === '+7') {
+            if (e.target.value === '+7' || e.target.value === '+7 (') {
                 e.target.value = '';
             }
         });
-
-        // Разрешаем стирать +7 при необходимости
-        phoneInput.addEventListener('keydown', function(e) {
-            // Если пользователь нажимает Backspace и курсор в начале
-            if (e.key === 'Backspace' && e.target.selectionStart <= 4) {
-                e.preventDefault();
-                e.target.value = '';
-            }
-        });
-
-        // ============================================
-        // ОБРАБОТКА ОТПРАВКИ ФОРМЫ
-        // ============================================
 
         phoneForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Нормализуем номер
             const normalizedPhone = normalizePhone(phoneInput.value);
 
-            // Валидация
             if (!normalizedPhone) {
                 errorMessage.classList.add('visible');
                 phoneInput.classList.add('error');
                 return;
             }
 
-            // Формируем JSON для отправки на сервер
             const requestData = {
-                phone: normalizedPhone,
-                // Здесь могут быть другие поля формы
-                // name: document.getElementById('name').value,
-                // email: document.getElementById('email').value
+                phone: normalizedPhone
             };
 
-            /**
-             * ============================================
-             * ПРИМЕР ОТПРАВКИ НА БЭКЕНД (PYTHON)
-             * ============================================
-             * 
-             * Раскомментируйте этот код, когда бэкенд будет готов
-             * Замените URL на реальный эндпоинт вашего API
-             * 
-             * fetch('https://your-api.com/api/submit', {
-             *     method: 'POST',
-             *     headers: {
-             *         'Content-Type': 'application/json',
-             *     },
-             *     body: JSON.stringify(requestData)
-             * })
-             * .then(response => response.json())
-             * .then(data => {
-             *     console.log('Успех:', data);
-             *     // Обработка успешного ответа
-             * })
-             * .catch(error => {
-             *     console.error('Ошибка:', error);
-             *     // Обработка ошибки
-             * });
-             */
-
-            // Для демонстрации показываем, что будет отправлено
             resultContent.textContent = JSON.stringify(requestData, null, 2);
             result.classList.add('visible');
 
