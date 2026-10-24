@@ -8,21 +8,16 @@
 </head>
 <body>
     <div class="app">
-        <!-- ПУНКТ 1 & 2: Красная плашка (Шапка + Карта + QR) -->
+        <!-- Красная плашка: шапка + карта + QR -->
         <div class="hero-wrapper">
             <header class="topbar">
-                <!-- Иконка Поиск (Вариант 5) -->
                 <button class="icon-btn" data-message="Профиль">
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="7.5"/>
                         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
                     </svg>
                 </button>
-                
-                <!-- Логотип текстом -->
                 <div class="logo-text">Логотип</div>
-                
-                <!-- Иконка Колокольчик (Вариант 5) -->
                 <button class="icon-btn" data-message="Уведомления" style="position:relative">
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 9A6 6 0 0 0 6 9c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -34,7 +29,7 @@
 
             <section class="loyalty-hero">
                 <div class="loyalty-layout">
-                    <!-- Карта лояльности -->
+                    <!-- Горизонтальная карта 9:5 -->
                     <div class="loyalty-card">
                         <div class="eyebrow">Карта лояльности</div>
                         <div class="card-number">4826 3910 2756</div>
@@ -43,16 +38,21 @@
                         <div class="card-label">Бонусная карта</div>
                     </div>
 
-                    <!-- QR Код (Растянут по высоте карты) -->
+                    <!-- QR-код той же высоты -->
                     <div class="qr-container">
                         <div class="qr-card" data-message="QR-код на кассе">
-                            <!-- Инлайн SVG вместо битого файла -->
                             <svg class="qr-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="100" height="100" fill="white"/>
                                 <g fill="#1a202c">
-                                    <rect x="10" y="10" width="20" height="20"/><rect x="13" y="13" width="14" height="14" fill="white"/><rect x="16" y="16" width="8" height="8"/>
-                                    <rect x="70" y="10" width="20" height="20"/><rect x="73" y="13" width="14" height="14" fill="white"/><rect x="76" y="16" width="8" height="8"/>
-                                    <rect x="10" y="70" width="20" height="20"/><rect x="13" y="73" width="14" height="14" fill="white"/><rect x="16" y="76" width="8" height="8"/>
+                                    <rect x="10" y="10" width="20" height="20"/>
+                                    <rect x="13" y="13" width="14" height="14" fill="white"/>
+                                    <rect x="16" y="16" width="8" height="8"/>
+                                    <rect x="70" y="10" width="20" height="20"/>
+                                    <rect x="73" y="13" width="14" height="14" fill="white"/>
+                                    <rect x="76" y="16" width="8" height="8"/>
+                                    <rect x="10" y="70" width="20" height="20"/>
+                                    <rect x="13" y="73" width="14" height="14" fill="white"/>
+                                    <rect x="16" y="76" width="8" height="8"/>
                                     <rect x="35" y="10" width="4" height="4"/><rect x="45" y="10" width="4" height="4"/><rect x="55" y="10" width="4" height="4"/>
                                     <rect x="35" y="18" width="4" height="4"/><rect x="50" y="18" width="4" height="4"/><rect x="60" y="18" width="4" height="4"/>
                                     <rect x="10" y="35" width="4" height="4"/><rect x="20" y="35" width="4" height="4"/><rect x="30" y="35" width="4" height="4"/>
@@ -80,7 +80,7 @@
             </section>
         </div>
 
-        <!-- ПУНКТ 3: Плашка Бонусы (отдельная, широкая) -->
+        <!-- Плашка Бонусы (отдельная, под красной зоной) -->
         <div class="bonus-strip">
             <div class="bonus-icon"></div>
             <div class="bonus-info">
@@ -90,16 +90,14 @@
             <div class="bonus-rate">1 бонус = 1 ₽</div>
         </div>
 
-        <!-- ПУНКТ 4: Специальные предложения (Слайдер) -->
+        <!-- Специальные предложения -->
         <section class="section">
             <div class="section-heading">
                 <h2>Специальные предложения</h2>
                 <button class="link-btn" data-message="Все предложения">Все <span>›</span></button>
             </div>
-            
             <div class="promo-slider">
                 <div class="promo-track" id="promoTrack">
-                    <!-- Слайд 1 -->
                     <div class="promo-slide">
                         <div class="promo-card">
                             <img class="promo-art" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80" alt="">
@@ -111,7 +109,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Слайд 2 -->
                     <div class="promo-slide">
                         <div class="promo-card">
                             <img class="promo-art" src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80" alt="">
@@ -123,7 +120,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Слайд 3 -->
                     <div class="promo-slide">
                         <div class="promo-card">
                             <img class="promo-art" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80" alt="">
@@ -135,7 +131,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Слайд 4 -->
                     <div class="promo-slide">
                         <div class="promo-card">
                             <img class="promo-art" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&q=80" alt="">
@@ -147,7 +142,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Слайд 5 -->
                     <div class="promo-slide">
                         <div class="promo-card">
                             <img class="promo-art" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="">
@@ -160,14 +154,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- Точки отдельно -->
                 <div class="promo-dots" id="promoDots">
                     <i class="active"></i><i></i><i></i><i></i><i></i>
                 </div>
             </div>
         </section>
 
-        <!-- ПУНКТ 5: Мои возможности -->
+        <!-- Мои возможности -->
         <section class="section">
             <div class="section-heading">
                 <h2>Мои возможности</h2>
@@ -196,7 +189,7 @@
             </div>
         </section>
 
-        <!-- Остальные секции (Игры, Купоны, Видео) -->
+        <!-- Игры с призами -->
         <section class="section">
             <div class="section-heading">
                 <h2>Игры с призами</h2>
@@ -221,6 +214,7 @@
             </div>
         </section>
 
+        <!-- Купоны -->
         <section class="section">
             <div class="section-heading">
                 <h2>Купоны</h2>
@@ -245,7 +239,7 @@
                         <div class="price-row"><strong>27 ₽</strong><del>90 ₽</del></div>
                     </div>
                 </div>
-                 <div class="coupon-card homegoods-card">
+                <div class="coupon-card homegoods-card">
                     <div class="homegoods-art"><img src="https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=400&q=80" alt=""></div>
                     <div class="coupon-copy">
                         <h3>Скидки до 50% за Магнитики</h3>
@@ -256,6 +250,7 @@
             </div>
         </section>
 
+        <!-- Короткие видео -->
         <section class="section">
             <div class="section-heading">
                 <h2>Короткие видео</h2>
@@ -280,7 +275,7 @@
             </div>
         </section>
 
-        <!-- ПУНКТ 7: Нижнее меню -->
+        <!-- Нижнее меню -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-tab="Главная">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
