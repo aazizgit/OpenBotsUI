@@ -1,4 +1,7 @@
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
+
 :root {
     --red: #ed1c0b;
     --hot: #ff2b66;
@@ -8,14 +11,25 @@
     --surface: #fff;
     --nav-height: 72px;
 }
-html { background: var(--page); scroll-behavior: smooth; }
+
+html {
+    background: var(--page);
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     color: var(--ink);
     font-family: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     -webkit-font-smoothing: antialiased;
 }
-button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+button {
+    font: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
 .app {
     max-width: 680px;
     margin: 0 auto;
@@ -44,6 +58,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     top: 0;
     z-index: 20;
 }
+
 .icon-btn {
     position: relative;
     border: 0;
@@ -53,6 +68,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     place-items: center;
     padding: 0;
 }
+
 .icon-btn svg {
     width: 27px;
     height: 27px;
@@ -62,6 +78,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+
 .logo-text {
     justify-self: center;
     font-size: 21px;
@@ -71,6 +88,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     margin: 0;
     line-height: 1;
 }
+
 .message-count {
     position: absolute;
     top: -3px;
@@ -94,6 +112,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     position: relative;
     overflow: hidden;
 }
+
 .loyalty-layout {
     display: grid;
     grid-template-columns: 1.25fr 0.75fr;
@@ -101,17 +120,19 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     align-items: stretch;
 }
 
+/* КАРТА ЛОЯЛЬНОСТИ 9:5 */
 .loyalty-card {
     position: relative;
     overflow: hidden;
     min-width: 0;
-    min-height: 176px;
+    aspect-ratio: 9 / 5;
     border-radius: 20px;
     padding: 15px;
     background: linear-gradient(135deg, #ff754a 0%, #ff145d 66%, #db0d75 100%);
     border: 1px solid #ffffff54;
     box-shadow: inset 0 0 0 1px #ffffff12;
 }
+
 .loyalty-card:after {
     content: "";
     position: absolute;
@@ -123,7 +144,14 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     transform: rotate(42deg);
     background: linear-gradient(135deg, #ffb34c77, #c20e6e55);
 }
-.eyebrow { font-size: 10px; font-weight: 600; position: relative; z-index: 1; }
+
+.eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
 .card-number {
     position: relative;
     z-index: 1;
@@ -133,7 +161,14 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     margin-top: 27px;
     white-space: nowrap;
 }
-.card-status { font-size: 10px; position: relative; z-index: 1; margin-top: 4px; }
+
+.card-status {
+    font-size: 10px;
+    position: relative;
+    z-index: 1;
+    margin-top: 4px;
+}
+
 .card-watermark {
     position: absolute;
     z-index: 1;
@@ -150,7 +185,14 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     color: #ffffff42;
     transform: rotate(-12deg);
 }
-.card-watermark span { font-size: 15px; position: absolute; right: 1px; top: 0; }
+
+.card-watermark span {
+    font-size: 15px;
+    position: absolute;
+    right: 1px;
+    top: 0;
+}
+
 .card-label {
     position: absolute;
     bottom: 13px;
@@ -164,6 +206,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     font-weight: 700;
 }
 
+/* QR-код той же высоты, что и карта */
 .qr-container {
     display: flex;
     flex-direction: column;
@@ -171,6 +214,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     align-items: center;
     height: 100%;
 }
+
 .qr-card {
     border: 0;
     border-radius: 19px;
@@ -186,6 +230,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     height: 100%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .qr-svg {
     width: 100%;
     height: auto;
@@ -193,9 +238,14 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     max-height: 100px;
     object-fit: contain;
 }
-.qr-card span { font-size: 9px; line-height: 1.25; text-align: center; }
 
-/* BONUS STRIP */
+.qr-card span {
+    font-size: 9px;
+    line-height: 1.25;
+    text-align: center;
+}
+
+/* Плашка Бонусы */
 .bonus-strip {
     background: #fff;
     margin: 11px 16px 0;
@@ -206,6 +256,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     justify-content: space-between;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
+
 .bonus-icon {
     width: 32px;
     height: 32px;
@@ -217,13 +268,41 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     font-size: 18px;
     margin-right: 10px;
 }
-.bonus-info { display: flex; flex-direction: column; }
-.bonus-info span { font-size: 10px; color: #777; }
-.bonus-info strong { font-size: 18px; line-height: 1; }
-.bonus-info strong i { font-size: 12px; color: #f35a6c; font-style: normal; }
-.bonus-rate { font-size: 10px; color: #888; }
 
-.section { background: #fff; border-radius: 26px; padding: 16px; margin-top: 11px; }
+.bonus-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.bonus-info span {
+    font-size: 10px;
+    color: #777;
+}
+
+.bonus-info strong {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.bonus-info strong i {
+    font-size: 12px;
+    color: #f35a6c;
+    font-style: normal;
+}
+
+.bonus-rate {
+    font-size: 10px;
+    color: #888;
+}
+
+/* Секции */
+.section {
+    background: #fff;
+    border-radius: 26px;
+    padding: 16px;
+    margin-top: 11px;
+}
+
 .section-heading {
     display: flex;
     align-items: center;
@@ -232,7 +311,15 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     margin-bottom: 13px;
     min-width: 0;
 }
-h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font-weight: 800; }
+
+h2 {
+    font-size: 21px;
+    line-height: 1.15;
+    letter-spacing: -0.6px;
+    margin: 0;
+    font-weight: 800;
+}
+
 .link-btn {
     flex: 0 0 auto;
     border: 0;
@@ -243,17 +330,33 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     padding: 2px 0 2px 8px;
     white-space: nowrap;
 }
-.link-btn span { font-size: 23px; vertical-align: -2px; margin-left: 3px; font-weight: 400; }
 
-/* SLIDER */
-.promo-slider { position: relative; overflow: hidden; border-radius: 20px; }
+.link-btn span {
+    font-size: 23px;
+    vertical-align: -2px;
+    margin-left: 3px;
+    font-weight: 400;
+}
+
+/* Слайдер */
+.promo-slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
 .promo-track {
     display: flex;
     gap: 20px;
     transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: transform;
 }
-.promo-slide { min-width: calc(100% - 20px); flex-shrink: 0; }
+
+.promo-slide {
+    min-width: calc(100% - 20px);
+    flex-shrink: 0;
+}
+
 .promo-card {
     min-height: 180px;
     position: relative;
@@ -264,6 +367,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     padding: 15px;
     border: 1px solid #f0f0f0;
 }
+
 .promo-art {
     position: absolute;
     right: 0;
@@ -274,12 +378,14 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     object-position: center;
     border-radius: 0 20px 20px 0;
 }
+
 .promo-copy {
     position: relative;
     z-index: 2;
     width: 55%;
     max-width: 220px;
 }
+
 .promo-tag {
     display: inline-block;
     border-radius: 20px;
@@ -290,6 +396,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     font-weight: 800;
     letter-spacing: 0.3px;
 }
+
 .promo-copy h3 {
     font-size: clamp(18px, 5vw, 24px);
     line-height: 1.1;
@@ -297,6 +404,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     margin: 10px 0 7px;
     color: #1a202c;
 }
+
 .promo-copy p {
     font-size: 10px;
     line-height: 1.4;
@@ -304,6 +412,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     margin: 0 0 10px;
     max-width: 190px;
 }
+
 .light-btn {
     display: flex;
     align-items: center;
@@ -316,12 +425,14 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     font-size: 10px;
     font-weight: 800;
 }
+
 .promo-dots {
     display: flex;
     justify-content: center;
     gap: 6px;
     padding: 12px 0 4px;
 }
+
 .promo-dots i {
     width: 6px;
     height: 6px;
@@ -330,9 +441,20 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     display: block;
     transition: all 0.3s;
 }
-.promo-dots i.active { background: #ff1475; width: 18px; border-radius: 3px; }
 
-.feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.promo-dots i.active {
+    background: #ff1475;
+    width: 18px;
+    border-radius: 3px;
+}
+
+/* Мои возможности */
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
 .feature {
     height: 145px;
     border: 0;
@@ -344,8 +466,15 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     color: #fff;
     display: block;
 }
-.gift-feature { background: linear-gradient(130deg, #ff1472, #ff3c88); }
-.history-feature { background: linear-gradient(130deg, #ff641a, #ffae3e); }
+
+.gift-feature {
+    background: linear-gradient(130deg, #ff1472, #ff3c88);
+}
+
+.history-feature {
+    background: linear-gradient(130deg, #ff641a, #ffae3e);
+}
+
 .feature-copy {
     position: absolute;
     top: 14px;
@@ -356,8 +485,18 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     gap: 6px;
     max-width: 75%;
 }
-.feature-copy strong { font-size: 15px; line-height: 1.1; letter-spacing: -0.3px; }
-.feature-copy small { font-size: 9px; line-height: 1.4; }
+
+.feature-copy strong {
+    font-size: 15px;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+}
+
+.feature-copy small {
+    font-size: 9px;
+    line-height: 1.4;
+}
+
 .feature-art {
     position: absolute;
     right: -3px;
@@ -367,7 +506,12 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     object-fit: contain;
     object-position: right bottom;
 }
-.history-feature .feature-art { width: 62%; height: 65%; }
+
+.history-feature .feature-art {
+    width: 62%;
+    height: 65%;
+}
+
 .round-arrow {
     position: absolute;
     bottom: 14px;
@@ -383,6 +527,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     z-index: 3;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
 .round-arrow svg {
     width: 22px;
     height: 22px;
@@ -393,6 +538,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     stroke-linejoin: round;
 }
 
+/* Горизонтальные списки */
 .horizontal-list {
     display: grid;
     grid-auto-flow: column;
@@ -403,7 +549,12 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     scrollbar-width: none;
     padding: 1px 1px 5px;
 }
-.horizontal-list::-webkit-scrollbar { display: none; }
+
+.horizontal-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* Игры */
 .game-card {
     height: 196px;
     border-radius: 19px;
@@ -414,8 +565,15 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     padding: 0;
     background: #30105e;
 }
-.party-game { background: linear-gradient(145deg, #a336e9, #21104e 80%); }
-.wheel-game { background: linear-gradient(125deg, #9470f5, #6bb9ff); }
+
+.party-game {
+    background: linear-gradient(145deg, #a336e9, #21104e 80%);
+}
+
+.wheel-game {
+    background: linear-gradient(125deg, #9470f5, #6bb9ff);
+}
+
 .game-art {
     position: absolute;
     top: 0;
@@ -425,6 +583,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     object-fit: cover;
     object-position: center top;
 }
+
 .game-copy {
     position: absolute;
     inset: 0;
@@ -436,9 +595,11 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     justify-content: flex-end;
     background: linear-gradient(180deg, transparent 18%, #18082d15 36%, #18082dbf 100%);
 }
+
 .wheel-game .game-copy {
     background: linear-gradient(180deg, transparent 18%, #254aa022 40%, #3157aacc 100%);
 }
+
 .game-tag {
     position: absolute;
     top: 10px;
@@ -450,7 +611,15 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     font-size: 8px;
     font-weight: 800;
 }
-.game-copy h3 { font-size: 15px; line-height: 1.15; letter-spacing: -0.3px; margin: 0 0 12px; font-weight: 700; }
+
+.game-copy h3 {
+    font-size: 15px;
+    line-height: 1.15;
+    letter-spacing: -0.3px;
+    margin: 0 0 12px;
+    font-weight: 700;
+}
+
 .play-btn {
     border: 0;
     border-radius: 25px;
@@ -461,7 +630,11 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     padding: 8px 16px;
 }
 
-.coupon-list { grid-auto-columns: calc(48% - 5px); }
+/* Купоны */
+.coupon-list {
+    grid-auto-columns: calc(48% - 5px);
+}
+
 .coupon-card {
     min-width: 0;
     position: relative;
@@ -470,6 +643,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     background: #f3f3f1;
     scroll-snap-align: start;
 }
+
 .coupon-image {
     height: 126px;
     background: #e9e9e7;
@@ -478,6 +652,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     justify-content: center;
     padding: 12px;
 }
+
 .coupon-image img {
     max-width: 80%;
     max-height: 100%;
@@ -486,6 +661,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     object-fit: contain;
     mix-blend-mode: multiply;
 }
+
 .heart {
     position: absolute;
     right: 9px;
@@ -500,8 +676,15 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     color: #444;
     padding: 0;
 }
-.heart.is-favorite { color: #f21e36; }
-.coupon-copy { padding: 11px 11px 12px; }
+
+.heart.is-favorite {
+    color: #f21e36;
+}
+
+.coupon-copy {
+    padding: 11px 11px 12px;
+}
+
 .coupon-copy h3 {
     font-size: 12px;
     line-height: 1.3;
@@ -513,7 +696,14 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.coupon-copy p { font-size: 10px; color: #4b4b4b; margin: 0 0 10px; white-space: nowrap; }
+
+.coupon-copy p {
+    font-size: 10px;
+    color: #4b4b4b;
+    margin: 0 0 10px;
+    white-space: nowrap;
+}
+
 .mplus {
     display: inline-block;
     background: linear-gradient(90deg, #ff321f, #fa5ba4);
@@ -522,7 +712,14 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     color: #fff;
     font-size: 9px;
 }
-.price-row { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
 .price-row strong {
     display: inline-block;
     background: #f0180a;
@@ -533,9 +730,16 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     text-align: center;
     font-size: 12px;
 }
-.price-row del { font-size: 10px; color: #777; }
 
-.homegoods-card { background: #fff; }
+.price-row del {
+    font-size: 10px;
+    color: #777;
+}
+
+.homegoods-card {
+    background: #fff;
+}
+
 .homegoods-art {
     height: 126px;
     background: #df1729;
@@ -544,11 +748,27 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     align-items: center;
     justify-content: center;
 }
-.homegoods-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-.homegoods-card .coupon-copy h3 { font-size: 13px; }
-.homegoods-card .price-row strong { font-size: 10px; }
 
-.video-list { grid-auto-columns: 44%; }
+.homegoods-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.homegoods-card .coupon-copy h3 {
+    font-size: 13px;
+}
+
+.homegoods-card .price-row strong {
+    font-size: 10px;
+}
+
+/* Видео */
+.video-list {
+    grid-auto-columns: 44%;
+}
+
 .video-card {
     position: relative;
     aspect-ratio: 1.3;
@@ -561,13 +781,21 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     color: white;
     text-align: left;
 }
-.video-card img { width: 100%; height: 100%; display: block; object-fit: cover; }
+
+.video-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
 .video-card:after {
     content: "";
     position: absolute;
     inset: 40% 0 0;
     background: linear-gradient(transparent, #0008);
 }
+
 .video-play {
     position: absolute;
     z-index: 2;
@@ -583,6 +811,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     font-size: 9px;
     padding-left: 2px;
 }
+
 .video-label {
     position: absolute;
     z-index: 2;
@@ -593,6 +822,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     font-weight: 800;
 }
 
+/* Нижнее меню — парящее, 80% */
 .bottom-nav {
     position: fixed;
     z-index: 30;
@@ -612,6 +842,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     border-radius: 22px;
     box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
 }
+
 .nav-item {
     border: 0;
     background: transparent;
@@ -626,6 +857,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     min-width: 0;
     padding: 0;
 }
+
 .nav-item svg {
     width: 23px;
     height: 23px;
@@ -635,8 +867,14 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     stroke-linecap: round;
     stroke-linejoin: round;
 }
-.nav-item.active { color: #ed1c0b; }
-.nav-item.active svg { stroke-width: 2.2; }
+
+.nav-item.active {
+    color: #ed1c0b;
+}
+
+.nav-item.active svg {
+    stroke-width: 2.2;
+}
 
 .toast {
     position: fixed;
@@ -656,7 +894,11 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     box-shadow: 0 8px 25px #0002;
     transition: opacity 0.18s, transform 0.18s;
 }
-.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
 
 @media (min-width: 540px) {
     .loyalty-hero { padding: 12px 24px 22px; }
@@ -666,10 +908,10 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     .video-list { grid-auto-columns: 30%; }
     .feature { height: 170px; }
 }
+
 @media (max-width: 360px) {
     .topbar { padding-left: 17px; padding-right: 17px; }
     .loyalty-hero { padding: 8px 12px 17px; }
-    .loyalty-card { min-height: 160px; padding: 12px; }
     .card-number { font-size: 15px; margin-top: 24px; }
     .card-watermark { right: 0; transform: scale(0.8) rotate(-12deg); }
     .section { padding: 16px 12px; border-radius: 23px; }
@@ -684,6 +926,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     .coupon-list { grid-auto-columns: 65%; }
     .video-list { grid-auto-columns: 55%; }
 }
+
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition: none !important; }
