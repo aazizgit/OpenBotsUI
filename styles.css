@@ -25,6 +25,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     overflow: clip;
 }
 
+/* HERO WRAPPER */
 .hero-wrapper {
     background: linear-gradient(135deg, #ff3a27 0%, #ff6440 50%, #ff1768 100%);
     border-radius: 0 0 30px 30px;
@@ -33,7 +34,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
 
 .topbar {
     height: 60px;
-    padding: calc(env(safe-area-inset-top) + 9px) 25px 9px;
+    padding: calc(env(safe-area-inset-top) + 9px) 25px 9px; /* Выровняли padding */
     display: grid;
     grid-template-columns: 42px 1fr 42px;
     align-items: center;
@@ -63,7 +64,7 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
 }
 .logo-text {
     justify-self: center;
-    font-size: 21px;
+    font-size: 21px; /* Как у H2 */
     font-weight: 800;
     letter-spacing: -0.6px;
     color: #fff;
@@ -97,19 +98,19 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     display: grid;
     grid-template-columns: 1.25fr 0.75fr;
     gap: 9px;
+    align-items: stretch; /* Растягиваем детей на одну высоту */
 }
 
-/* КАРТА ЛОЯЛЬНОСТИ — пропорции пластиковой карты 9:5 */
 .loyalty-card {
     position: relative;
     overflow: hidden;
     min-width: 0;
+    min-height: 176px;
     border-radius: 20px;
     padding: 15px;
     background: linear-gradient(135deg, #ff754a 0%, #ff145d 66%, #db0d75 100%);
     border: 1px solid #ffffff54;
     box-shadow: inset 0 0 0 1px #ffffff12;
-    aspect-ratio: 9 / 5;
 }
 .loyalty-card:after {
     content: "";
@@ -162,7 +163,14 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     font-size: 9px;
     font-weight: 700;
 }
-.side-stack { display: grid; grid-template-rows: 1fr auto; gap: 8px; min-width: 0; }
+
+.qr-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
 .qr-card {
     border: 0;
     border-radius: 19px;
@@ -174,35 +182,46 @@ button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparen
     justify-content: center;
     flex-direction: column;
     gap: 5px;
-    min-width: 0;
+    width: 100%;
+    height: 100%; /* Занимает всю доступную высоту */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-.qr-card img { width: min(100%, 84px); aspect-ratio: 1; display: block; }
+.qr-svg { 
+    width: 100%; 
+    height: auto; 
+    aspect-ratio: 1; 
+    max-height: 100px; /* Ограничим размер, чтобы не раздувало */
+    object-fit: contain;
+}
 .qr-card span { font-size: 9px; line-height: 1.25; text-align: center; }
-.bonus-card {
+
+/* BONUS STRIP (Новая плашка) */
+.bonus-strip {
     background: #fff;
-    color: #333;
-    border-radius: 17px;
-    padding: 9px 8px;
+    margin: 11px 16px 0; /* Отступы как у секций */
+    border-radius: 26px;
+    padding: 12px 16px;
     display: flex;
-    gap: 7px;
     align-items: center;
-    min-width: 0;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 .bonus-icon {
-    flex: 0 0 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    display: grid;
-    place-items: center;
     background: linear-gradient(135deg, #ff713b, #ff175e);
     color: #fff;
-    font-size: 20px;
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    margin-right: 10px;
 }
-.bonus-card div:last-child { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
-.bonus-card span { font-size: 9px; color: #777; }
-.bonus-card strong { font-size: 16px; line-height: 1.1; }
-.bonus-card strong i { font-size: 11px; color: #f35a6c; font-style: normal; }
-.bonus-card small { font-size: 8px; color: #888; }
+.bonus-info { display: flex; flex-direction: column; }
+.bonus-info span { font-size: 10px; color: #777; }
+.bonus-info strong { font-size: 18px; line-height: 1; }
+.bonus-info strong i { font-size: 12px; color: #f35a6c; font-style: normal; }
+.bonus-rate { font-size: 10px; color: #888; }
 
 .section { background: #fff; border-radius: 26px; padding: 16px; margin-top: 11px; }
 .section-heading {
@@ -219,33 +238,31 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     border: 0;
     background: transparent;
     color: #303030;
-    font-size: 16px;
+    font-size: 16px; /* Крупнее */
     font-weight: 700;
     padding: 2px 0 2px 8px;
     white-space: nowrap;
 }
 .link-btn span { font-size: 23px; vertical-align: -2px; margin-left: 3px; font-weight: 400; }
 
+/* SLIDER */
 .promo-slider { position: relative; overflow: hidden; border-radius: 20px; }
 .promo-track {
     display: flex;
-    gap: 20px;
+    gap: 20px; /* Gap равен радиусу */
     transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
     will-change: transform;
 }
 .promo-slide { min-width: calc(100% - 20px); flex-shrink: 0; }
-
-/* БАННЕРЫ — пропорции 16:9 */
 .promo-card {
-    min-height: 0;
+    min-height: 180px;
     position: relative;
     overflow: hidden;
     border-radius: 20px;
-    background: #fff;
+    background: #fff; /* Белый фон */
     color: #1a202c;
     padding: 15px;
     border: 1px solid #f0f0f0;
-    aspect-ratio: 16 / 9;
 }
 .promo-art {
     position: absolute;
@@ -274,10 +291,10 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     letter-spacing: 0.3px;
 }
 .promo-copy h3 {
-    font-size: clamp(16px, 4.5vw, 22px);
+    font-size: clamp(18px, 5vw, 24px);
     line-height: 1.1;
     letter-spacing: -0.5px;
-    margin: 8px 0 6px;
+    margin: 10px 0 7px;
     color: #1a202c;
 }
 .promo-copy p {
@@ -341,8 +358,6 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
 }
 .feature-copy strong { font-size: 15px; line-height: 1.1; letter-spacing: -0.3px; }
 .feature-copy small { font-size: 9px; line-height: 1.4; }
-
-/* КАРТИНКИ В "МОИ ВОЗМОЖНОСТИ" — пропорции 4:3 */
 .feature-art {
     position: absolute;
     right: -3px;
@@ -351,7 +366,6 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     height: 68%;
     object-fit: contain;
     object-position: right bottom;
-    aspect-ratio: 4 / 3;
 }
 .history-feature .feature-art { width: 62%; height: 65%; }
 .round-arrow {
@@ -390,9 +404,8 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     padding: 1px 1px 5px;
 }
 .horizontal-list::-webkit-scrollbar { display: none; }
-
-/* КАРТИНКИ ИГР — пропорции 16:9 */
 .game-card {
+    height: 196px;
     border-radius: 19px;
     overflow: hidden;
     position: relative;
@@ -400,7 +413,6 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     color: #fff;
     padding: 0;
     background: #30105e;
-    aspect-ratio: 9 / 14;
 }
 .party-game { background: linear-gradient(145deg, #a336e9, #21104e 80%); }
 .wheel-game { background: linear-gradient(125deg, #9470f5, #6bb9ff); }
@@ -412,7 +424,6 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     height: 105px;
     object-fit: cover;
     object-position: center top;
-    aspect-ratio: 16 / 9;
 }
 .game-copy {
     position: absolute;
@@ -459,15 +470,13 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     background: #f3f3f1;
     scroll-snap-align: start;
 }
-
-/* КАРТИНКИ КУПОНОВ — квадрат 1:1 */
 .coupon-image {
+    height: 126px;
     background: #e9e9e7;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 12px;
-    aspect-ratio: 1 / 1;
 }
 .coupon-image img {
     max-width: 80%;
@@ -528,12 +537,12 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
 
 .homegoods-card { background: #fff; }
 .homegoods-art {
+    height: 126px;
     background: #df1729;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 1 / 1;
 }
 .homegoods-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .homegoods-card .coupon-copy h3 { font-size: 13px; }
@@ -542,6 +551,7 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
 .video-list { grid-auto-columns: 44%; }
 .video-card {
     position: relative;
+    aspect-ratio: 1.3;
     border: 0;
     border-radius: 16px;
     overflow: hidden;
@@ -550,7 +560,6 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     scroll-snap-align: start;
     color: white;
     text-align: left;
-    aspect-ratio: 1.3;
 }
 .video-card img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .video-card:after {
@@ -597,10 +606,10 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
     grid-template-columns: repeat(4, 1fr);
     height: calc(var(--nav-height) + env(safe-area-inset-bottom));
     padding: 8px 10px calc(7px + env(safe-area-inset-bottom));
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.8); /* 80% прозрачности */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-radius: 22px;
+    border-radius: 22px; /* Закругленные углы */
     box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
 }
 .nav-item {
@@ -660,13 +669,14 @@ h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font
 @media (max-width: 360px) {
     .topbar { padding-left: 17px; padding-right: 17px; }
     .loyalty-hero { padding: 8px 12px 17px; }
+    .loyalty-card { min-height: 160px; padding: 12px; }
     .card-number { font-size: 15px; margin-top: 24px; }
     .card-watermark { right: 0; transform: scale(0.8) rotate(-12deg); }
     .section { padding: 16px 12px; border-radius: 23px; }
     h2 { font-size: 19px; }
     .promo-card { padding: 12px; }
     .promo-copy { width: 60%; }
-    .promo-copy h3 { font-size: 16px; }
+    .promo-copy h3 { font-size: 18px; }
     .feature { height: 138px; padding: 11px; }
     .feature-copy strong { font-size: 13px; }
     .feature-copy small { font-size: 8px; }

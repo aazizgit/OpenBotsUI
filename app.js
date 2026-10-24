@@ -25,73 +25,121 @@ document.querySelectorAll('.heart').forEach(btn => btn.addEventListener('click',
     notify(btn.classList.contains('is-favorite') ? 'Добавлено в избранное' : 'Удалено из избранного');
 }));
 
+// Slider Logic
 const track = document.getElementById('promoTrack');
 const dotsContainer = document.getElementById('promoDots');
-if (track) {
+if (track && dotsContainer) {
     const originalSlides = Array.from(track.children);
     const totalReal = originalSlides.length;
+    
+    // Clone first and last for infinite loop
     const firstClone = originalSlides[0].cloneNode(true);
     const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
+    
     track.appendChild(firstClone);
     track.insertBefore(lastClone, originalSlides[0]);
+    
     const allSlides = track.children;
     const dots = dotsContainer.querySelectorAll('i');
-    let currentIndex = 1;
+    
+    let currentIndex = 1; // Start at the real first slide (index 1 because of clone)
     let autoTimer;
     let startX = 0, currentX = 0, isDragging = false;
-    const getStepWidth = () => allSlides[0].offsetWidth + 20;
+    
+    const getStepWidth = () => allSlides[0].offsetWidth + 20; // Width + Gap
+    
     const updateDots = () => {
         const realIndex = ((currentIndex - 1) + totalReal) % totalReal;
         dots.forEach((d, i) => d.classList.toggle('active', i === realIndex));
     };
+    
     const goTo = (index, animate = true) => {
         if (!animate) track.style.transition = 'none';
         else track.style.transition = 'transform .45s cubic-bezier(.22,.61,.36,1)';
+        
         track.style.transform = `translateX(-${index * getStepWidth()}px)`;
         currentIndex = index;
         updateDots();
     };
+    
     const nextSlide = () => goTo(currentIndex + 1);
     const prevSlide = () => goTo(currentIndex - 1);
-    const resetAutoTimer = () => { clearInterval(autoTimer); autoTimer = setInterval(nextSlide, 10000); };
+    
+    const resetAutoTimer = () => { 
+        clearInterval(autoTimer); 
+        autoTimer = setInterval(nextSlide, 10000); 
+    };
+    
+    // Handle transition end to jump silently
     track.addEventListener('transitionend', () => {
-        if (currentIndex === 0) goTo(totalReal, false);
-        else if (currentIndex === totalReal + 1) goTo(1, false);
+        if (currentIndex === 0) {
+            goTo(totalReal, false); // Jump to last real slide
+        } else if (currentIndex === totalReal + 1) {
+            goTo(1, false); // Jump to first real slide
+        }
     });
+    
+    // Init
     goTo(1, false);
     resetAutoTimer();
-    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; track.style.transition = 'none'; }, {passive:true});
+    
+    // Touch Events
+    track.addEventListener('touchstart', e => { 
+        startX = e.touches[0].clientX; 
+        isDragging = true; 
+        track.style.transition = 'none'; 
+    }, {passive:true});
+    
     track.addEventListener('touchmove', e => {
         if (!isDragging) return;
         currentX = e.touches[0].clientX;
-        track.style.transform = `translateX(${-(currentIndex * getStepWidth()) + (currentX - startX)}px)`;
+        const diff = currentX - startX;
+        const offset = -(currentIndex * getStepWidth()) + diff;
+        track.style.transform = `translateX(${offset}px)`;
     }, {passive:true});
+    
     track.addEventListener('touchend', () => {
         if (!isDragging) return;
         isDragging = false;
         const diff = currentX - startX;
         const threshold = getStepWidth() * 0.2;
+        
         if (diff < -threshold) nextSlide();
         else if (diff > threshold) prevSlide();
         else goTo(currentIndex);
+        
         resetAutoTimer();
     });
-    track.addEventListener('mousedown', e => { startX = e.clientX; isDragging = true; track.style.transition = 'none'; e.preventDefault(); });
+    
+    // Mouse Events (Desktop)
+    track.addEventListener('mousedown', e => { 
+        startX = e.clientX; 
+        isDragging = true; 
+        track.style.transition = 'none'; 
+        e.preventDefault(); 
+    });
+    
     document.addEventListener('mousemove', e => {
         if (!isDragging) return;
         currentX = e.clientX;
-        track.style.transform = `translateX(${-(currentIndex * getStepWidth()) + (currentX - startX)}px)`;
+        const diff = currentX - startX;
+        const offset = -(currentIndex * getStepWidth()) + diff;
+        track.style.transform = `translateX(${offset}px)`;
     });
+    
     document.addEventListener('mouseup', () => {
         if (!isDragging) return;
         isDragging = false;
         const diff = currentX - startX;
         const threshold = getStepWidth() * 0.2;
+        
         if (diff < -threshold) nextSlide();
         else if (diff > threshold) prevSlide();
         else goTo(currentIndex);
+        
         resetAutoTimer();
     });
+    
     window.addEventListener('resize', () => goTo(currentIndex, false));
 }
 })();

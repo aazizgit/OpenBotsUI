@@ -8,15 +8,21 @@
 </head>
 <body>
     <div class="app">
+        <!-- ПУНКТ 1 & 2: Красная плашка (Шапка + Карта + QR) -->
         <div class="hero-wrapper">
             <header class="topbar">
+                <!-- Иконка Поиск (Вариант 5) -->
                 <button class="icon-btn" data-message="Профиль">
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="7.5"/>
                         <line x1="21" y1="21" x2="16.5" y2="16.5"/>
                     </svg>
                 </button>
+                
+                <!-- Логотип текстом -->
                 <div class="logo-text">Логотип</div>
+                
+                <!-- Иконка Колокольчик (Вариант 5) -->
                 <button class="icon-btn" data-message="Уведомления" style="position:relative">
                     <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 9A6 6 0 0 0 6 9c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -25,8 +31,10 @@
                     <span class="message-count">3</span>
                 </button>
             </header>
+
             <section class="loyalty-hero">
                 <div class="loyalty-layout">
+                    <!-- Карта лояльности -->
                     <div class="loyalty-card">
                         <div class="eyebrow">Карта лояльности</div>
                         <div class="card-number">4826 3910 2756</div>
@@ -34,34 +42,67 @@
                         <div class="card-watermark">М<span>+</span></div>
                         <div class="card-label">Бонусная карта</div>
                     </div>
-                    <div class="side-stack">
+
+                    <!-- QR Код (Растянут по высоте карты) -->
+                    <div class="qr-container">
                         <div class="qr-card" data-message="QR-код на кассе">
-                            <img src="qr-demo.svg" alt="QR-код">
+                            <!-- Инлайн SVG вместо битого файла -->
+                            <svg class="qr-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100" height="100" fill="white"/>
+                                <g fill="#1a202c">
+                                    <rect x="10" y="10" width="20" height="20"/><rect x="13" y="13" width="14" height="14" fill="white"/><rect x="16" y="16" width="8" height="8"/>
+                                    <rect x="70" y="10" width="20" height="20"/><rect x="73" y="13" width="14" height="14" fill="white"/><rect x="76" y="16" width="8" height="8"/>
+                                    <rect x="10" y="70" width="20" height="20"/><rect x="13" y="73" width="14" height="14" fill="white"/><rect x="16" y="76" width="8" height="8"/>
+                                    <rect x="35" y="10" width="4" height="4"/><rect x="45" y="10" width="4" height="4"/><rect x="55" y="10" width="4" height="4"/>
+                                    <rect x="35" y="18" width="4" height="4"/><rect x="50" y="18" width="4" height="4"/><rect x="60" y="18" width="4" height="4"/>
+                                    <rect x="10" y="35" width="4" height="4"/><rect x="20" y="35" width="4" height="4"/><rect x="30" y="35" width="4" height="4"/>
+                                    <rect x="40" y="35" width="4" height="4"/><rect x="50" y="35" width="4" height="4"/><rect x="60" y="35" width="4" height="4"/>
+                                    <rect x="70" y="35" width="4" height="4"/><rect x="80" y="35" width="4" height="4"/><rect x="90" y="35" width="4" height="4"/>
+                                    <rect x="15" y="45" width="4" height="4"/><rect x="25" y="45" width="4" height="4"/><rect x="35" y="45" width="4" height="4"/>
+                                    <rect x="45" y="45" width="4" height="4"/><rect x="55" y="45" width="4" height="4"/><rect x="65" y="45" width="4" height="4"/>
+                                    <rect x="75" y="45" width="4" height="4"/><rect x="85" y="45" width="4" height="4"/>
+                                    <rect x="10" y="55" width="4" height="4"/><rect x="20" y="55" width="4" height="4"/><rect x="30" y="55" width="4" height="4"/>
+                                    <rect x="40" y="55" width="4" height="4"/><rect x="50" y="55" width="4" height="4"/><rect x="60" y="55" width="4" height="4"/>
+                                    <rect x="70" y="55" width="4" height="4"/><rect x="80" y="55" width="4" height="4"/><rect x="90" y="55" width="4" height="4"/>
+                                    <rect x="15" y="65" width="4" height="4"/><rect x="25" y="65" width="4" height="4"/><rect x="35" y="65" width="4" height="4"/>
+                                    <rect x="45" y="65" width="4" height="4"/><rect x="55" y="65" width="4" height="4"/><rect x="65" y="65" width="4" height="4"/>
+                                    <rect x="75" y="65" width="4" height="4"/><rect x="85" y="65" width="4" height="4"/>
+                                    <rect x="35" y="75" width="4" height="4"/><rect x="45" y="75" width="4" height="4"/><rect x="55" y="75" width="4" height="4"/>
+                                    <rect x="65" y="75" width="4" height="4"/><rect x="75" y="75" width="4" height="4"/><rect x="85" y="75" width="4" height="4"/>
+                                    <rect x="35" y="85" width="4" height="4"/><rect x="50" y="85" width="4" height="4"/><rect x="65" y="85" width="4" height="4"/>
+                                    <rect x="80" y="85" width="4" height="4"/><rect x="90" y="85" width="4" height="4"/>
+                                </g>
+                            </svg>
                             <span>Покажите QR-код<br>на кассе</span>
-                        </div>
-                        <div class="bonus-card" data-message="Бонусы">
-                            <div class="bonus-icon"></div>
-                            <div>
-                                <span>Бонусы</span>
-                                <strong>298 <i>✦</i></strong>
-                                <small>1 бонус = 1 ₽</small>
-                            </div>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
 
+        <!-- ПУНКТ 3: Плашка Бонусы (отдельная, широкая) -->
+        <div class="bonus-strip">
+            <div class="bonus-icon"></div>
+            <div class="bonus-info">
+                <span>Бонусы</span>
+                <strong>298 <i>✦</i></strong>
+            </div>
+            <div class="bonus-rate">1 бонус = 1 ₽</div>
+        </div>
+
+        <!-- ПУНКТ 4: Специальные предложения (Слайдер) -->
         <section class="section">
             <div class="section-heading">
                 <h2>Специальные предложения</h2>
                 <button class="link-btn" data-message="Все предложения">Все <span>›</span></button>
             </div>
+            
             <div class="promo-slider">
                 <div class="promo-track" id="promoTrack">
+                    <!-- Слайд 1 -->
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600" alt="">
+                            <img class="promo-art" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80" alt="">
                             <div class="promo-copy">
                                 <span class="promo-tag">СПЕЦИАЛЬНАЯ АКЦИЯ</span>
                                 <h3>Техника<br>для вдохновения</h3>
@@ -70,9 +111,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Слайд 2 -->
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600" alt="">
+                            <img class="promo-art" src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80" alt="">
                             <div class="promo-copy">
                                 <span class="promo-tag">НОВИНКА</span>
                                 <h3>Косметика<br>М.Косметик</h3>
@@ -81,9 +123,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Слайд 3 -->
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600" alt="">
+                            <img class="promo-art" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80" alt="">
                             <div class="promo-copy">
                                 <span class="promo-tag">СВЕЖЕЕ</span>
                                 <h3>Фермерские<br>продукты</h3>
@@ -92,9 +135,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Слайд 4 -->
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600" alt="">
+                            <img class="promo-art" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&q=80" alt="">
                             <div class="promo-copy">
                                 <span class="promo-tag">ВЫГОДНО</span>
                                 <h3>Скидки до 50%<br>за Магнитики</h3>
@@ -103,9 +147,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Слайд 5 -->
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600" alt="">
+                            <img class="promo-art" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="">
                             <div class="promo-copy">
                                 <span class="promo-tag">ОНЛАЙН</span>
                                 <h3>Доставка<br>за 30 минут</h3>
@@ -115,12 +160,14 @@
                         </div>
                     </div>
                 </div>
+                <!-- Точки отдельно -->
                 <div class="promo-dots" id="promoDots">
                     <i class="active"></i><i></i><i></i><i></i><i></i>
                 </div>
             </div>
         </section>
 
+        <!-- ПУНКТ 5: Мои возможности -->
         <section class="section">
             <div class="section-heading">
                 <h2>Мои возможности</h2>
@@ -131,7 +178,7 @@
                         <strong>Мои подарки</strong>
                         <small>Варианты подарков<br>за ваши бонусы</small>
                     </div>
-                    <img class="feature-art" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400" alt="">
+                    <img class="feature-art" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80" alt="">
                     <span class="round-arrow">
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                     </span>
@@ -141,7 +188,7 @@
                         <strong>История<br>начислений</strong>
                         <small>Узнайте, как и за что<br>вы получаете бонусы</small>
                     </div>
-                    <img class="feature-art" src="https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?w=400" alt="">
+                    <img class="feature-art" src="https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?w=400&q=80" alt="">
                     <span class="round-arrow">
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                     </span>
@@ -149,6 +196,7 @@
             </div>
         </section>
 
+        <!-- Остальные секции (Игры, Купоны, Видео) -->
         <section class="section">
             <div class="section-heading">
                 <h2>Игры с призами</h2>
@@ -156,7 +204,7 @@
             </div>
             <div class="horizontal-list">
                 <div class="game-card party-game">
-                    <img class="game-art" src="https://images.unsplash.com/photo-1511882150382-421056c89033?w=400" alt="">
+                    <img class="game-art" src="https://images.unsplash.com/photo-1511882150382-421056c89033?w=400&q=80" alt="">
                     <span class="game-tag">НОВАЯ ИГРА</span>
                     <div class="game-copy">
                         <h3>Тусовка со вкусом<br>и вау-призами</h3>
@@ -164,7 +212,7 @@
                     </div>
                 </div>
                 <div class="game-card wheel-game">
-                    <img class="game-art" src="https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?w=400" alt="">
+                    <img class="game-art" src="https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?w=400&q=80" alt="">
                     <div class="game-copy">
                         <h3>Крутите колесо<br>и забирайте бонусы</h3>
                         <button class="play-btn" data-message="Играть">Играть</button>
@@ -180,43 +228,29 @@
             </div>
             <div class="horizontal-list coupon-list">
                 <div class="coupon-card">
-                    <div class="coupon-image">
-                        <img src="https://images.unsplash.com/photo-1517093157656-b9ec790443c9?w=300" alt="">
-                    </div>
+                    <div class="coupon-image"><img src="https://images.unsplash.com/photo-1517093157656-b9ec790443c9?w=300&q=80" alt=""></div>
                     <button class="heart">♡</button>
                     <div class="coupon-copy">
                         <h3>Мюсли Ого запечённые с яблоком</h3>
                         <p>за <span class="mplus">2 M</span> Магнитика</p>
-                        <div class="price-row">
-                            <strong>37 ₽</strong>
-                            <del>123 ₽</del>
-                        </div>
+                        <div class="price-row"><strong>37 ₽</strong><del>123 ₽</del></div>
                     </div>
                 </div>
                 <div class="coupon-card">
-                    <div class="coupon-image">
-                        <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300" alt="">
-                    </div>
+                    <div class="coupon-image"><img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300&q=80" alt=""></div>
                     <button class="heart">♡</button>
                     <div class="coupon-copy">
                         <h3>Макароны Pasteroni феттуччине, 350 г</h3>
                         <p>за <span class="mplus">2 M</span> Магнитика</p>
-                        <div class="price-row">
-                            <strong>27 ₽</strong>
-                            <del>90 ₽</del>
-                        </div>
+                        <div class="price-row"><strong>27 ₽</strong><del>90 ₽</del></div>
                     </div>
                 </div>
-                <div class="coupon-card homegoods-card">
-                    <div class="homegoods-art">
-                        <img src="https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=400" alt="">
-                    </div>
+                 <div class="coupon-card homegoods-card">
+                    <div class="homegoods-art"><img src="https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=400&q=80" alt=""></div>
                     <div class="coupon-copy">
                         <h3>Скидки до 50% за Магнитики</h3>
                         <p>Специальные предложения</p>
-                        <div class="price-row">
-                            <strong>От 20 <span class="mplus">M</span></strong>
-                        </div>
+                        <div class="price-row"><strong>От 20 <span class="mplus">M</span></strong></div>
                     </div>
                 </div>
             </div>
@@ -229,53 +263,39 @@
             </div>
             <div class="horizontal-list video-list">
                 <div class="video-card" data-message="Быстрый завтрак">
-                    <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400" alt="">
+                    <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400&q=80" alt="">
                     <span class="video-play">▶</span>
                     <span class="video-label">Быстрый завтрак</span>
                 </div>
                 <div class="video-card" data-message="Идеи для обеда">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80" alt="">
                     <span class="video-play">▶</span>
                     <span class="video-label">Идеи для обеда</span>
                 </div>
                 <div class="video-card" data-message="Сладкий момент">
-                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400" alt="">
+                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&q=80" alt="">
                     <span class="video-play">▶</span>
                     <span class="video-label">Сладкий момент</span>
                 </div>
             </div>
         </section>
 
+        <!-- ПУНКТ 7: Нижнее меню -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-tab="Главная">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 Главная
             </button>
             <button class="nav-item" data-tab="Каталог">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                 Каталог
             </button>
             <button class="nav-item" data-tab="Бонусы">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v6l4 2"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                 Бонусы
             </button>
             <button class="nav-item" data-tab="Ещё">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="1"/>
-                    <circle cx="19" cy="12" r="1"/>
-                    <circle cx="5" cy="12" r="1"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
                 Ещё
             </button>
         </nav>
