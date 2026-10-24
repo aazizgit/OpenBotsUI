@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ff3b2b">
+<meta name="description" content="Адаптивный концепт программы лояльности для мобильных устройств">
+<title>Магнит Плюс — Mini App концепт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <button class="icon-btn" aria-label="Профиль" data-message="Профиль — демо-экран">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.1"/><path d="M5.2 19c.8-3.1 3.1-4.7 6.8-4.7s6 1.6 6.8 4.7"/><circle cx="12" cy="12" r="9.1"/></svg>
+    </button>
+    <button class="logo" aria-label="Магнит Плюс — главная" data-tab="Главная"><span class="logo-mark">м<span>+</span></span></button>
+    <button class="icon-btn messages" aria-label="Сообщения" data-message="У вас 3 новых сообщения">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M9.5 21h5"/></svg><span class="message-count">3</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="loyalty-hero">
+      <div class="brand-row">
+        <div class="brand-name"><span class="brand-symbol">м<span>+</span></span><span>магнит <b>плюс</b></span></div>
+        <button class="pay-link" data-message="Магнит Пэй — демо-экран">Магнит Пэй <span class="chevron">›</span><small>Пополнить</small></button>
+      </div>
+      <div class="loyalty-layout">
+        <article class="loyalty-card">
+          <span class="eyebrow">Карта лояльности</span>
+          <div class="card-number">4826 3910 2756</div>
+          <div class="card-status">Активна</div>
+          <div class="card-watermark">м<span>+</span></div>
+          <span class="card-label">Бонусная карта</span>
+        </article>
+        <div class="side-stack">
+          <button class="qr-card" data-message="Это демонстрационный QR-код, он не работает на кассе">
+            <img src="assets/qr-demo.svg" alt="Декоративный QR-код">
+            <span>Покажите QR-код<br>на кассе</span>
+          </button>
+          <article class="bonus-card">
+            <div class="bonus-icon">✦</div><div><span>Бонусы</span><strong>298 <i>M+</i></strong><small>1 бонус = 1 ₽</small></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section promo-section">
+      <div class="section-heading"><h2>Специальные предложения</h2><button class="link-btn" data-message="Все акции — демо">Все <span>›</span></button></div>
+      <article class="promo-card">
+        <img class="promo-art" src="assets/promo-art.png" alt="">
+        <div class="promo-copy"><span class="promo-tag">СПЕЦИАЛЬНАЯ АКЦИЯ</span><h3>Техника<br>для вдохновения</h3><p>Собирайте бонусы и получайте скидки на полезные гаджеты</p><button class="light-btn" data-message="Подробнее об акции — демо">Подробнее <span>→</span></button></div>
+        <div class="slider-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><h2>Мои возможности</h2></div>
+      <div class="feature-grid">
+        <button class="feature gift-feature" data-message="Мои подарки — демо">
+          <span class="feature-copy"><strong>Мои подарки</strong><small>Варианты подарков<br>за ваши бонусы</small></span>
+          <img src="assets/gift-art.png" alt="" class="feature-art">
+          <span class="round-arrow">›</span>
+        </button>
+        <button class="feature history-feature" data-message="История начислений — демо">
+          <span class="feature-copy"><strong>История<br>начислений</strong><small>Узнайте, как и за что<br>вы получаете бонусы</small></span>
+          <img src="assets/history-art.png" alt="" class="feature-art">
+          <span class="round-arrow">›</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><h2>Игры с призами</h2><button class="link-btn" data-message="Все игры — демо">Все <span>›</span></button></div>
+      <div class="horizontal-list game-list">
+        <article class="game-card party-game">
+          <img src="assets/game-party-art.png" alt="" class="game-art">
+          <div class="game-copy"><span class="game-tag">НОВАЯ ИГРА</span><h3>Тусовка со вкусом<br>и вау-призами</h3><button class="play-btn" data-message="Игра «Тусовка» — демо">Играть</button></div>
+        </article>
+        <article class="game-card wheel-game">
+          <img src="assets/game-wheel-art.png" alt="" class="game-art">
+          <div class="game-copy"><h3>Крутите колесо<br>и забирайте бонусы</h3><button class="play-btn" data-message="Колесо призов — демо">Играть</button></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><h2>Купоны</h2><button class="link-btn" data-message="Все купоны — демо">Все <span>›</span></button></div>
+      <div class="horizontal-list coupon-list">
+        <article class="coupon-card">
+          <div class="coupon-image"><img src="assets/product-muesli.png" alt="Упаковка мюсли"></div><button class="heart" aria-label="Добавить мюсли в избранное">♡</button>
+          <div class="coupon-copy"><h3>Мюсли Ого запечённые с яблоком</h3><p>за <b class="mplus">2 M</b> Магнитика</p><div class="price-row"><strong>37 ₽</strong><del>123 ₽</del></div></div>
+        </article>
+        <article class="coupon-card">
+          <div class="coupon-image"><img src="assets/product-pasta.png" alt="Упаковка макарон"></div><button class="heart" aria-label="Добавить макароны в избранное">♡</button>
+          <div class="coupon-copy"><h3>Макароны Pasteroni феттуччине, 350 г</h3><p>за <b class="mplus">2 M</b> Магнитика</p><div class="price-row"><strong>27 ₽</strong><del>90 ₽</del></div></div>
+        </article>
+        <article class="coupon-card homegoods-card">
+          <div class="homegoods-art"><img src="assets/product-homegoods.png" alt="Товары для дома"></div>
+          <div class="coupon-copy"><h3>Скидки до 50% за Магнитики</h3><p>Специальные предложения</p><div class="price-row"><strong>От 20 M</strong></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section videos-section">
+      <div class="section-heading"><h2>Короткие видео</h2><button class="link-btn" data-message="Все видео — демо">Все <span>›</span></button></div>
+      <div class="horizontal-list video-list">
+        <button class="video-card" data-message="Видео «Быстрый завтрак» — демо"><img src="assets/video-breakfast-art.png" alt=""><span class="video-play">▶</span><span class="video-label">Быстрый завтрак</span></button>
+        <button class="video-card" data-message="Видео «Идеи для обеда» — демо"><img src="assets/video-lunch-art.png" alt=""><span class="video-play">▶</span><span class="video-label">Идеи для обеда</span></button>
+        <button class="video-card" data-message="Видео «Сладкий момент» — демо"><img src="assets/video-snack-art.png" alt=""><span class="video-play">▶</span><span class="video-label">Сладкий момент</span></button>
+      </div>
+    </section>
+    <p class="footer-note">Всё самое выгодное — в одном месте <span>♥</span></p>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Основная навигация">
+    <button class="nav-item active" data-tab="Главная" aria-current="page"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>Главная</span></button>
+    <button class="nav-item" data-tab="Каталог"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Каталог</span></button>
+    <button class="nav-item" data-tab="Бонусы"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg><span>Бонусы</span></button>
+    <button class="nav-item" data-tab="Ещё"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg><span>Ещё</span></button>
+  </nav>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</div>
+<script src="app.js"></script>
+</body></html>
