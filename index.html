@@ -4,7 +4,734 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Магнит Плюс — Mini App концепт</title>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * { box-sizing: border-box; }
+        :root {
+            --red: #ed1c0b;
+            --hot: #ff2b66;
+            --ink: #2f2f2f;
+            --muted: #777;
+            --page: #f4f4f2;
+            --surface: #fff;
+            --nav-height: 72px;
+        }
+        html { background: var(--page); scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            font-family: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        button { font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .app {
+            max-width: 680px;
+            margin: 0 auto;
+            min-height: 100dvh;
+            background: var(--page);
+            padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px);
+            overflow: clip;
+        }
+
+        /* HERO: общий красный фон для шапки и карты */
+        .hero-wrapper {
+            background: linear-gradient(135deg, #ff3a27 0%, #ff6440 50%, #ff1768 100%);
+            border-radius: 0 0 30px 30px;
+            overflow: hidden;
+        }
+
+        .topbar {
+            height: 60px;
+            padding: calc(env(safe-area-inset-top) + 9px) 17px 9px;
+            display: grid;
+            grid-template-columns: 42px 1fr 42px;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+        .icon-btn {
+            position: relative;
+            border: 0;
+            background: transparent;
+            color: #fff;
+            display: grid;
+            place-items: center;
+            padding: 0;
+        }
+        .icon-btn svg {
+            width: 27px;
+            height: 27px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .logo-text {
+            justify-self: center;
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.6px;
+            color: #fff;
+            margin: 0;
+            line-height: 1;
+        }
+        .message-count {
+            position: absolute;
+            top: -3px;
+            right: -4px;
+            min-width: 15px;
+            height: 15px;
+            padding: 0 3px;
+            border: 2px solid white;
+            border-radius: 10px;
+            background: var(--red);
+            color: #fff;
+            font-size: 8px;
+            font-weight: 800;
+            display: grid;
+            place-items: center;
+        }
+
+        .loyalty-hero {
+            padding: 10px 17px 20px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .loyalty-layout {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 9px;
+            align-items: stretch;
+        }
+
+        /* Карта лояльности 9:5 */
+        .loyalty-card {
+            position: relative;
+            overflow: hidden;
+            min-width: 0;
+            aspect-ratio: 9 / 5;
+            border-radius: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff754a 0%, #ff145d 66%, #db0d75 100%);
+            border: 1px solid #ffffff54;
+            box-shadow: inset 0 0 0 1px #ffffff12;
+        }
+        .loyalty-card:after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 35px;
+            right: -55px;
+            top: 5px;
+            transform: rotate(42deg);
+            background: linear-gradient(135deg, #ffb34c77, #c20e6e55);
+        }
+        .eyebrow { font-size: 10px; font-weight: 600; position: relative; z-index: 1; }
+        .card-number {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(15px, 4vw, 21px);
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            margin-top: 27px;
+            white-space: nowrap;
+        }
+        .card-status { font-size: 10px; position: relative; z-index: 1; margin-top: 4px; }
+        .card-watermark {
+            position: absolute;
+            z-index: 1;
+            right: 9px;
+            top: 45px;
+            width: 64px;
+            height: 64px;
+            border: 6px solid #ffffff25;
+            border-radius: 17px;
+            display: grid;
+            place-items: center;
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff42;
+            transform: rotate(-12deg);
+        }
+        .card-watermark span { font-size: 15px; position: absolute; right: 1px; top: 0; }
+        .card-label {
+            position: absolute;
+            bottom: 13px;
+            left: 14px;
+            z-index: 1;
+            background: #ffffff24;
+            border: 1px solid #ffffff28;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        /* QR-код той же высоты, что и карта */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .qr-card {
+            border: 0;
+            border-radius: 19px;
+            background: #fff;
+            color: #555;
+            padding: 10px 7px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .qr-svg {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1;
+            max-height: 100px;
+            object-fit: contain;
+        }
+        .qr-card span { font-size: 9px; line-height: 1.25; text-align: center; }
+
+        /* Плашка Бонусы — отдельная, широкая */
+        .bonus-strip {
+            background: #fff;
+            margin: 11px 16px 0;
+            border-radius: 26px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        .bonus-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff713b, #ff175e);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .bonus-info { display: flex; flex-direction: column; }
+        .bonus-info span { font-size: 10px; color: #777; }
+        .bonus-info strong { font-size: 18px; line-height: 1; }
+        .bonus-info strong i { font-size: 12px; color: #f35a6c; font-style: normal; }
+        .bonus-rate { font-size: 10px; color: #888; }
+
+        /* Секции */
+        .section { background: #fff; border-radius: 26px; padding: 16px; margin-top: 11px; }
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
+            min-width: 0;
+        }
+        h2 { font-size: 21px; line-height: 1.15; letter-spacing: -0.6px; margin: 0; font-weight: 800; }
+        .link-btn {
+            flex: 0 0 auto;
+            border: 0;
+            background: transparent;
+            color: #303030;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 2px 0 2px 8px;
+            white-space: nowrap;
+        }
+        .link-btn span { font-size: 23px; vertical-align: -2px; margin-left: 3px; font-weight: 400; }
+
+        /* Слайдер спецпредложений */
+        .promo-slider { position: relative; overflow: hidden; border-radius: 20px; }
+        .promo-track {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+            will-change: transform;
+        }
+        .promo-slide { min-width: calc(100% - 20px); flex-shrink: 0; }
+        .promo-card {
+            min-height: 180px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #fff;
+            color: #1a202c;
+            padding: 15px;
+            border: 1px solid #f0f0f0;
+        }
+        .promo-art {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 0 20px 20px 0;
+        }
+        .promo-copy {
+            position: relative;
+            z-index: 2;
+            width: 55%;
+            max-width: 220px;
+        }
+        .promo-tag {
+            display: inline-block;
+            border-radius: 20px;
+            background: #ff1475;
+            color: #fff;
+            padding: 4px 8px;
+            font-size: 8px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+        }
+        .promo-copy h3 {
+            font-size: clamp(18px, 5vw, 24px);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            margin: 10px 0 7px;
+            color: #1a202c;
+        }
+        .promo-copy p {
+            font-size: 10px;
+            line-height: 1.4;
+            color: #555;
+            margin: 0 0 10px;
+            max-width: 190px;
+        }
+        .light-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 0;
+            background: linear-gradient(135deg, #ff3a27, #ff1768);
+            color: #fff;
+            border-radius: 30px;
+            padding: 8px 12px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .promo-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 0 4px;
+        }
+        .promo-dots i {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #d0d0d0;
+            display: block;
+            transition: all 0.3s;
+        }
+        .promo-dots i.active { background: #ff1475; width: 18px; border-radius: 3px; }
+
+        /* Мои возможности */
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .feature {
+            height: 145px;
+            border: 0;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            text-align: left;
+            padding: 14px;
+            color: #fff;
+            display: block;
+        }
+        .gift-feature { background: linear-gradient(130deg, #ff1472, #ff3c88); }
+        .history-feature { background: linear-gradient(130deg, #ff641a, #ffae3e); }
+        .feature-copy {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-width: 75%;
+        }
+        .feature-copy strong { font-size: 15px; line-height: 1.1; letter-spacing: -0.3px; }
+        .feature-copy small { font-size: 9px; line-height: 1.4; }
+        .feature-art {
+            position: absolute;
+            right: -3px;
+            bottom: 0;
+            width: 68%;
+            height: 68%;
+            object-fit: contain;
+            object-position: right bottom;
+        }
+        .history-feature .feature-art { width: 62%; height: 65%; }
+        .round-arrow {
+            position: absolute;
+            bottom: 14px;
+            left: 14px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #fff;
+            color: #ff4a31;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .round-arrow svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Горизонтальные списки */
+        .horizontal-list {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: calc(52% - 5px);
+            gap: 11px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            padding: 1px 1px 5px;
+        }
+        .horizontal-list::-webkit-scrollbar { display: none; }
+
+        /* Игры */
+        .game-card {
+            height: 196px;
+            border-radius: 19px;
+            overflow: hidden;
+            position: relative;
+            scroll-snap-align: start;
+            color: #fff;
+            padding: 0;
+            background: #30105e;
+        }
+        .party-game { background: linear-gradient(145deg, #a336e9, #21104e 80%); }
+        .wheel-game { background: linear-gradient(125deg, #9470f5, #6bb9ff); }
+        .game-art {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 105px;
+            object-fit: cover;
+            object-position: center top;
+        }
+        .game-copy {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-end;
+            background: linear-gradient(180deg, transparent 18%, #18082d15 36%, #18082dbf 100%);
+        }
+        .wheel-game .game-copy {
+            background: linear-gradient(180deg, transparent 18%, #254aa022 40%, #3157aacc 100%);
+        }
+        .game-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ff4b39;
+            color: #fff;
+            border-radius: 20px;
+            padding: 4px 7px;
+            font-size: 8px;
+            font-weight: 800;
+        }
+        .game-copy h3 { font-size: 15px; line-height: 1.15; letter-spacing: -0.3px; margin: 0 0 12px; font-weight: 700; }
+        .play-btn {
+            border: 0;
+            border-radius: 25px;
+            background: #35d977;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 8px 16px;
+        }
+
+        /* Купоны */
+        .coupon-list { grid-auto-columns: calc(48% - 5px); }
+        .coupon-card {
+            min-width: 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: #f3f3f1;
+            scroll-snap-align: start;
+        }
+        .coupon-image {
+            height: 126px;
+            background: #e9e9e7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+        .coupon-image img {
+            max-width: 80%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+        .heart {
+            position: absolute;
+            right: 9px;
+            top: 8px;
+            width: 28px;
+            height: 28px;
+            border: 0;
+            background: #fff;
+            border-radius: 50%;
+            font-size: 22px;
+            line-height: 1;
+            color: #444;
+            padding: 0;
+        }
+        .heart.is-favorite { color: #f21e36; }
+        .coupon-copy { padding: 11px 11px 12px; }
+        .coupon-copy h3 {
+            font-size: 12px;
+            line-height: 1.3;
+            font-weight: 700;
+            margin: 0 0 7px;
+            min-height: 31px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .coupon-copy p { font-size: 10px; color: #4b4b4b; margin: 0 0 10px; white-space: nowrap; }
+        .mplus {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff321f, #fa5ba4);
+            border-radius: 12px;
+            padding: 2px 5px;
+            color: #fff;
+            font-size: 9px;
+        }
+        .price-row { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+        .price-row strong {
+            display: inline-block;
+            background: #f0180a;
+            color: #fff;
+            border-radius: 25px;
+            padding: 8px 12px;
+            min-width: 66px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .price-row del { font-size: 10px; color: #777; }
+
+        .homegoods-card { background: #fff; }
+        .homegoods-art {
+            height: 126px;
+            background: #df1729;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .homegoods-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+        .homegoods-card .coupon-copy h3 { font-size: 13px; }
+        .homegoods-card .price-row strong { font-size: 10px; }
+
+        /* Видео */
+        .video-list { grid-auto-columns: 44%; }
+        .video-card {
+            position: relative;
+            aspect-ratio: 1.3;
+            border: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0;
+            background: #ddd;
+            scroll-snap-align: start;
+            color: white;
+            text-align: left;
+        }
+        .video-card img { width: 100%; height: 100%; display: block; object-fit: cover; }
+        .video-card:after {
+            content: "";
+            position: absolute;
+            inset: 40% 0 0;
+            background: linear-gradient(transparent, #0008);
+        }
+        .video-play {
+            position: absolute;
+            z-index: 2;
+            top: 9px;
+            left: 9px;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #ffffffd9;
+            color: #222;
+            display: grid;
+            place-items: center;
+            font-size: 9px;
+            padding-left: 2px;
+        }
+        .video-label {
+            position: absolute;
+            z-index: 2;
+            left: 9px;
+            right: 7px;
+            bottom: 8px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* Нижнее меню — парящее, 80% */
+        .bottom-nav {
+            position: fixed;
+            z-index: 30;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            width: auto;
+            max-width: 660px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+            padding: 8px 10px calc(7px + env(safe-area-inset-bottom));
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 22px;
+            box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
+        .nav-item {
+            border: 0;
+            background: transparent;
+            color: #858585;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 0;
+            padding: 0;
+        }
+        .nav-item svg {
+            width: 23px;
+            height: 23px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .nav-item.active { color: #ed1c0b; }
+        .nav-item.active svg { stroke-width: 2.2; }
+
+        .toast {
+            position: fixed;
+            z-index: 50;
+            left: 50%;
+            bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 40px);
+            transform: translate(-50%, 10px);
+            opacity: 0;
+            pointer-events: none;
+            max-width: calc(100vw - 30px);
+            background: #252525;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 12px;
+            text-align: center;
+            box-shadow: 0 8px 25px #0002;
+            transition: opacity 0.18s, transform 0.18s;
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+        /* Волшебная кнопка */
+        .magic-btn-container {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 40;
+        }
+        .magic-btn {
+            background: #1a202c;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+        .magic-btn:hover { background: #2d3748; transform: translateY(-2px); }
+        .magic-btn svg { width: 20px; height: 20px; fill: white; }
+
+        @media (min-width: 540px) {
+            .loyalty-hero { padding: 12px 24px 22px; }
+            .section { padding: 16px 22px; }
+            .horizontal-list { grid-auto-columns: calc(42% - 5px); }
+            .coupon-list { grid-auto-columns: calc(33% - 6px); }
+            .video-list { grid-auto-columns: 30%; }
+            .feature { height: 170px; }
+        }
+        @media (max-width: 360px) {
+            .topbar { padding-left: 17px; padding-right: 17px; }
+            .loyalty-hero { padding: 8px 12px 17px; }
+            .card-number { font-size: 15px; margin-top: 24px; }
+            .card-watermark { right: 0; transform: scale(0.8) rotate(-12deg); }
+            .section { padding: 16px 12px; border-radius: 23px; }
+            h2 { font-size: 19px; }
+            .promo-card { padding: 12px; }
+            .promo-copy { width: 60%; }
+            .promo-copy h3 { font-size: 18px; }
+            .feature { height: 138px; padding: 11px; }
+            .feature-copy strong { font-size: 13px; }
+            .feature-copy small { font-size: 8px; }
+            .horizontal-list { grid-auto-columns: 72%; }
+            .coupon-list { grid-auto-columns: 65%; }
+            .video-list { grid-auto-columns: 55%; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition: none !important; }
+        }
+    </style>
 </head>
 <body>
     <div class="app">
@@ -29,7 +756,6 @@
 
             <section class="loyalty-hero">
                 <div class="loyalty-layout">
-                    <!-- Горизонтальная карта 9:5 -->
                     <div class="loyalty-card">
                         <div class="eyebrow">Карта лояльности</div>
                         <div class="card-number">4826 3910 2756</div>
@@ -38,7 +764,6 @@
                         <div class="card-label">Бонусная карта</div>
                     </div>
 
-                    <!-- QR-код той же высоты -->
                     <div class="qr-container">
                         <div class="qr-card" data-message="QR-код на кассе">
                             <svg class="qr-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -80,9 +805,9 @@
             </section>
         </div>
 
-        <!-- Плашка Бонусы (отдельная, под красной зоной) -->
+        <!-- Плашка Бонусы -->
         <div class="bonus-strip">
-            <div class="bonus-icon"></div>
+            <div class="bonus-icon">✦</div>
             <div class="bonus-info">
                 <span>Бонусы</span>
                 <strong>298 <i>✦</i></strong>
@@ -100,7 +825,14 @@
                 <div class="promo-track" id="promoTrack">
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80" alt="">
+                            <svg class="promo-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <defs><linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1a237e"/><stop offset="100%" stop-color="#3949ab"/></linearGradient></defs>
+                                <rect width="200" height="200" fill="url(#p1)"/>
+                                <circle cx="100" cy="90" r="35" fill="none" stroke="white" stroke-width="3" opacity="0.9"/>
+                                <circle cx="100" cy="90" r="20" fill="white" opacity="0.3"/>
+                                <rect x="85" y="130" width="30" height="4" rx="2" fill="white" opacity="0.7"/>
+                                <rect x="90" y="140" width="20" height="3" rx="1.5" fill="white" opacity="0.5"/>
+                            </svg>
                             <div class="promo-copy">
                                 <span class="promo-tag">СПЕЦИАЛЬНАЯ АКЦИЯ</span>
                                 <h3>Техника<br>для вдохновения</h3>
@@ -111,7 +843,12 @@
                     </div>
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80" alt="">
+                            <svg class="promo-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <defs><linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6a1b9a"/><stop offset="100%" stop-color="#e91e63"/></linearGradient></defs>
+                                <rect width="200" height="200" fill="url(#p2)"/>
+                                <path d="M100 60 C 85 60, 80 75, 80 90 L 80 130 C 80 135, 85 140, 90 140 L 110 140 C 115 140, 120 135, 120 130 L 120 90 C 120 75, 115 60, 100 60 Z" fill="white" opacity="0.85"/>
+                                <circle cx="100" cy="75" r="8" fill="white" opacity="0.5"/>
+                            </svg>
                             <div class="promo-copy">
                                 <span class="promo-tag">НОВИНКА</span>
                                 <h3>Косметика<br>М.Косметик</h3>
@@ -122,7 +859,13 @@
                     </div>
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80" alt="">
+                            <svg class="promo-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <defs><linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2e7d32"/><stop offset="100%" stop-color="#66bb6a"/></linearGradient></defs>
+                                <rect width="200" height="200" fill="url(#p3)"/>
+                                <path d="M100 70 Q 70 90 70 115 Q 70 140 100 140 Q 130 140 130 115 Q 130 90 100 70 Z" fill="white" opacity="0.85"/>
+                                <path d="M100 90 L 100 120" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M100 100 Q 110 95 115 105" stroke="#2e7d32" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                            </svg>
                             <div class="promo-copy">
                                 <span class="promo-tag">СВЕЖЕЕ</span>
                                 <h3>Фермерские<br>продукты</h3>
@@ -133,7 +876,13 @@
                     </div>
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=600&q=80" alt="">
+                            <svg class="promo-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <defs><linearGradient id="p4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e65100"/><stop offset="100%" stop-color="#ff7043"/></linearGradient></defs>
+                                <rect width="200" height="200" fill="url(#p4)"/>
+                                <rect x="75" y="80" width="50" height="50" rx="6" fill="white" opacity="0.9"/>
+                                <path d="M90 100 L 100 90 L 110 100 L 100 110 Z" fill="#e65100" opacity="0.7"/>
+                                <circle cx="100" cy="70" r="10" fill="white" opacity="0.6"/>
+                            </svg>
                             <div class="promo-copy">
                                 <span class="promo-tag">ВЫГОДНО</span>
                                 <h3>Скидки до 50%<br>за Магнитики</h3>
@@ -144,7 +893,14 @@
                     </div>
                     <div class="promo-slide">
                         <div class="promo-card">
-                            <img class="promo-art" src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="">
+                            <svg class="promo-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <defs><linearGradient id="p5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0277bd"/><stop offset="100%" stop-color="#4fc3f7"/></linearGradient></defs>
+                                <rect width="200" height="200" fill="url(#p5)"/>
+                                <rect x="60" y="90" width="60" height="35" rx="4" fill="white" opacity="0.9"/>
+                                <circle cx="75" cy="130" r="8" fill="white" opacity="0.8"/>
+                                <circle cx="105" cy="130" r="8" fill="white" opacity="0.8"/>
+                                <rect x="120" y="95" width="20" height="25" rx="2" fill="white" opacity="0.7"/>
+                            </svg>
                             <div class="promo-copy">
                                 <span class="promo-tag">ОНЛАЙН</span>
                                 <h3>Доставка<br>за 30 минут</h3>
@@ -171,7 +927,15 @@
                         <strong>Мои подарки</strong>
                         <small>Варианты подарков<br>за ваши бонусы</small>
                     </div>
-                    <img class="feature-art" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=400&q=80" alt="">
+                    <svg class="feature-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="50" y="80" width="100" height="80" rx="6" fill="white" opacity="0.9"/>
+                        <rect x="90" y="80" width="20" height="80" fill="#ff1472" opacity="0.7"/>
+                        <rect x="50" y="110" width="100" height="20" fill="#ff1472" opacity="0.7"/>
+                        <path d="M100 80 Q 80 60 70 70 Q 60 80 100 80" fill="white" opacity="0.9"/>
+                        <path d="M100 80 Q 120 60 130 70 Q 140 80 100 80" fill="white" opacity="0.9"/>
+                        <circle cx="70" cy="60" r="4" fill="white" opacity="0.7"/>
+                        <circle cx="130" cy="70" r="3" fill="white" opacity="0.6"/>
+                    </svg>
                     <span class="round-arrow">
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                     </span>
@@ -181,7 +945,13 @@
                         <strong>История<br>начислений</strong>
                         <small>Узнайте, как и за что<br>вы получаете бонусы</small>
                     </div>
-                    <img class="feature-art" src="https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?w=400&q=80" alt="">
+                    <svg class="feature-art" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="55" fill="none" stroke="white" stroke-width="6" opacity="0.9"/>
+                        <line x1="100" y1="100" x2="100" y2="65" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="100" y1="100" x2="125" y2="100" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="100" cy="100" r="5" fill="white"/>
+                        <path d="M140 140 L 155 155 L 145 155 Z" fill="white" opacity="0.8"/>
+                    </svg>
                     <span class="round-arrow">
                         <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                     </span>
@@ -197,7 +967,12 @@
             </div>
             <div class="horizontal-list">
                 <div class="game-card party-game">
-                    <img class="game-art" src="https://images.unsplash.com/photo-1511882150382-421056c89033?w=400&q=80" alt="">
+                    <svg class="game-art" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="120" fill="url(#g1)"/>
+                        <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a336e9"/><stop offset="100%" stop-color="#21104e"/></linearGradient></defs>
+                        <circle cx="200" cy="60" r="30" fill="white" opacity="0.2"/>
+                        <path d="M185 60 L 215 60 M 200 45 L 200 75" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
                     <span class="game-tag">НОВАЯ ИГРА</span>
                     <div class="game-copy">
                         <h3>Тусовка со вкусом<br>и вау-призами</h3>
@@ -205,7 +980,14 @@
                     </div>
                 </div>
                 <div class="game-card wheel-game">
-                    <img class="game-art" src="https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?w=400&q=80" alt="">
+                    <svg class="game-art" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="400" height="120" fill="url(#g2)"/>
+                        <defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#9470f5"/><stop offset="100%" stop-color="#6bb9ff"/></linearGradient></defs>
+                        <circle cx="200" cy="60" r="35" fill="none" stroke="white" stroke-width="3" opacity="0.8"/>
+                        <circle cx="200" cy="60" r="20" fill="white" opacity="0.3"/>
+                        <line x1="200" y1="25" x2="200" y2="95" stroke="white" stroke-width="2" opacity="0.6"/>
+                        <line x1="165" y1="60" x2="235" y2="60" stroke="white" stroke-width="2" opacity="0.6"/>
+                    </svg>
                     <div class="game-copy">
                         <h3>Крутите колесо<br>и забирайте бонусы</h3>
                         <button class="play-btn" data-message="Играть">Играть</button>
@@ -222,7 +1004,13 @@
             </div>
             <div class="horizontal-list coupon-list">
                 <div class="coupon-card">
-                    <div class="coupon-image"><img src="https://images.unsplash.com/photo-1517093157656-b9ec790443c9?w=300&q=80" alt=""></div>
+                    <div class="coupon-image">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                            <rect width="200" height="120" fill="#c8e6c9"/>
+                            <circle cx="100" cy="60" r="30" fill="#4caf50" opacity="0.8"/>
+                            <path d="M85 60 Q 100 40 115 60 Q 100 80 85 60" fill="white" opacity="0.9"/>
+                        </svg>
+                    </div>
                     <button class="heart">♡</button>
                     <div class="coupon-copy">
                         <h3>Мюсли Ого запечённые с яблоком</h3>
@@ -231,7 +1019,15 @@
                     </div>
                 </div>
                 <div class="coupon-card">
-                    <div class="coupon-image"><img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300&q=80" alt=""></div>
+                    <div class="coupon-image">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                            <rect width="200" height="120" fill="#fff9c4"/>
+                            <rect x="70" y="30" width="60" height="70" rx="4" fill="#f9a825" opacity="0.9"/>
+                            <line x1="80" y1="50" x2="120" y2="50" stroke="white" stroke-width="2" opacity="0.7"/>
+                            <line x1="80" y1="60" x2="120" y2="60" stroke="white" stroke-width="2" opacity="0.7"/>
+                            <line x1="80" y1="70" x2="110" y2="70" stroke="white" stroke-width="2" opacity="0.7"/>
+                        </svg>
+                    </div>
                     <button class="heart">♡</button>
                     <div class="coupon-copy">
                         <h3>Макароны Pasteroni феттуччине, 350 г</h3>
@@ -240,7 +1036,13 @@
                     </div>
                 </div>
                 <div class="coupon-card homegoods-card">
-                    <div class="homegoods-art"><img src="https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=400&q=80" alt=""></div>
+                    <div class="homegoods-art">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+                            <rect width="200" height="120" fill="#df1729"/>
+                            <text x="100" y="55" text-anchor="middle" font-family="sans-serif" font-size="28" font-weight="800" fill="white">-50%</text>
+                            <text x="100" y="80" text-anchor="middle" font-family="sans-serif" font-size="12" fill="white" opacity="0.9">за Магнитики</text>
+                        </svg>
+                    </div>
                     <div class="coupon-copy">
                         <h3>Скидки до 50% за Магнитики</h3>
                         <p>Специальные предложения</p>
@@ -258,17 +1060,32 @@
             </div>
             <div class="horizontal-list video-list">
                 <div class="video-card" data-message="Быстрый завтрак">
-                    <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400&q=80" alt="">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+                        <defs><linearGradient id="v1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5d4037"/><stop offset="100%" stop-color="#8d6e63"/></linearGradient></defs>
+                        <rect width="200" height="150" fill="url(#v1)"/>
+                        <circle cx="100" cy="75" r="25" fill="white" opacity="0.2"/>
+                        <polygon points="92,65 92,85 110,75" fill="white" opacity="0.9"/>
+                    </svg>
                     <span class="video-play">▶</span>
                     <span class="video-label">Быстрый завтрак</span>
                 </div>
                 <div class="video-card" data-message="Идеи для обеда">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80" alt="">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+                        <defs><linearGradient id="v2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e65100"/><stop offset="100%" stop-color="#ff9800"/></linearGradient></defs>
+                        <rect width="200" height="150" fill="url(#v2)"/>
+                        <circle cx="100" cy="75" r="25" fill="white" opacity="0.2"/>
+                        <polygon points="92,65 92,85 110,75" fill="white" opacity="0.9"/>
+                    </svg>
                     <span class="video-play">▶</span>
                     <span class="video-label">Идеи для обеда</span>
                 </div>
                 <div class="video-card" data-message="Сладкий момент">
-                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&q=80" alt="">
+                    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+                        <defs><linearGradient id="v3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#880e4f"/><stop offset="100%" stop-color="#e91e63"/></linearGradient></defs>
+                        <rect width="200" height="150" fill="url(#v3)"/>
+                        <circle cx="100" cy="75" r="25" fill="white" opacity="0.2"/>
+                        <polygon points="92,65 92,85 110,75" fill="white" opacity="0.9"/>
+                    </svg>
                     <span class="video-play">▶</span>
                     <span class="video-label">Сладкий момент</span>
                 </div>
@@ -296,7 +1113,135 @@
         </nav>
 
         <div class="toast" id="toast"></div>
+
+        <!-- Волшебная кнопка -->
+        <div class="magic-btn-container">
+            <button class="magic-btn" onclick="downloadProject()">
+                <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                Скачать проект (ZIP)
+            </button>
+        </div>
     </div>
-    <script src="app.js"></script>
+
+    <script>
+    (() => {
+        const toast = document.getElementById('toast');
+        let timer;
+        const notify = message => {
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(timer);
+            timer = setTimeout(() => toast.classList.remove('show'), 2200);
+        };
+        document.querySelectorAll('[data-message]').forEach(el => el.addEventListener('click', () => notify(el.dataset.message)));
+        document.querySelectorAll('[data-tab]').forEach(el => el.addEventListener('click', () => {
+            const tab = el.dataset.tab;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                const active = item.dataset.tab === tab;
+                item.classList.toggle('active', active);
+                if (active) item.setAttribute('aria-current', 'page');
+                else item.removeAttribute('aria-current');
+            });
+            if (tab === 'Главная') window.scrollTo({ top: 0, behavior: 'smooth' });
+            else notify(`Раздел «${tab}» — демонстрационный прототип`);
+        }));
+        document.querySelectorAll('.heart').forEach(btn => btn.addEventListener('click', () => {
+            btn.classList.toggle('is-favorite');
+            btn.textContent = btn.classList.contains('is-favorite') ? '♥' : '♡';
+            notify(btn.classList.contains('is-favorite') ? 'Добавлено в избранное' : 'Удалено из избранного');
+        }));
+
+        // Слайдер: 5 слайдов, зацикленный, свайп + авто 10 сек
+        const track = document.getElementById('promoTrack');
+        const dotsContainer = document.getElementById('promoDots');
+        if (track && dotsContainer) {
+            const originalSlides = Array.from(track.children);
+            const totalReal = originalSlides.length;
+            const firstClone = originalSlides[0].cloneNode(true);
+            const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
+            track.appendChild(firstClone);
+            track.insertBefore(lastClone, originalSlides[0]);
+            const allSlides = track.children;
+            const dots = dotsContainer.querySelectorAll('i');
+            let currentIndex = 1;
+            let autoTimer;
+            let startX = 0, currentX = 0, isDragging = false;
+            const getStepWidth = () => allSlides[0].offsetWidth + 20;
+            const updateDots = () => {
+                const realIndex = ((currentIndex - 1) + totalReal) % totalReal;
+                dots.forEach((d, i) => d.classList.toggle('active', i === realIndex));
+            };
+            const goTo = (index, animate = true) => {
+                if (!animate) track.style.transition = 'none';
+                else track.style.transition = 'transform .45s cubic-bezier(.22,.61,.36,1)';
+                track.style.transform = `translateX(-${index * getStepWidth()}px)`;
+                currentIndex = index;
+                updateDots();
+            };
+            const nextSlide = () => goTo(currentIndex + 1);
+            const prevSlide = () => goTo(currentIndex - 1);
+            const resetAutoTimer = () => { clearInterval(autoTimer); autoTimer = setInterval(nextSlide, 10000); };
+            track.addEventListener('transitionend', () => {
+                if (currentIndex === 0) goTo(totalReal, false);
+                else if (currentIndex === totalReal + 1) goTo(1, false);
+            });
+            goTo(1, false);
+            resetAutoTimer();
+            track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; track.style.transition = 'none'; }, { passive: true });
+            track.addEventListener('touchmove', e => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                const offset = -(currentIndex * getStepWidth()) + (currentX - startX);
+                track.style.transform = `translateX(${offset}px)`;
+            }, { passive: true });
+            track.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                const diff = currentX - startX;
+                const threshold = getStepWidth() * 0.2;
+                if (diff < -threshold) nextSlide();
+                else if (diff > threshold) prevSlide();
+                else goTo(currentIndex);
+                resetAutoTimer();
+            });
+            track.addEventListener('mousedown', e => { startX = e.clientX; isDragging = true; track.style.transition = 'none'; e.preventDefault(); });
+            document.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                currentX = e.clientX;
+                const offset = -(currentIndex * getStepWidth()) + (currentX - startX);
+                track.style.transform = `translateX(${offset}px)`;
+            });
+            document.addEventListener('mouseup', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                const diff = currentX - startX;
+                const threshold = getStepWidth() * 0.2;
+                if (diff < -threshold) nextSlide();
+                else if (diff > threshold) prevSlide();
+                else goTo(currentIndex);
+                resetAutoTimer();
+            });
+            window.addEventListener('resize', () => goTo(currentIndex, false));
+        }
+    })();
+
+    async function downloadProject() {
+        const zip = new JSZip();
+        const htmlContent = document.documentElement.outerHTML;
+        const cssContent = document.querySelector('style').textContent;
+        const jsContent = document.querySelector('script').textContent;
+
+        zip.file('index.html', htmlContent);
+        zip.file('styles.css', cssContent);
+        zip.file('app.js', jsContent);
+
+        const content = await zip.generateAsync({ type: 'blob' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(content);
+        link.download = 'magnit-plus-project.zip';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
+    </script>
 </body>
 </html>
